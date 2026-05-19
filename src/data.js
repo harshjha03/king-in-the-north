@@ -13,7 +13,7 @@ window.PORTFOLIO = {
     email: "harshtimes112@gmail.com",
     linkedin: "https://linkedin.com/in/harsh-jha-0311",
     mufasa: "https://mufasa-ka-jungle.vercel.app",
-    resumeUrl: "#",
+    resumeUrl: "./assets/resume.pdf",
   },
 
   // The four headline stats (hero)
@@ -280,8 +280,8 @@ window.PORTFOLIO = {
 
   links: [
     { label: "Send a Raven",       value: "harshtimes112@gmail.com", href: "mailto:harshtimes112@gmail.com" },
-    { label: "Cross Blades",       value: "/in/harshjha03",          href: "https://linkedin.com/in/harshjha03" },
+    { label: "Cross Blades",       value: "/in/harsh-jha-0311",      href: "https://www.linkedin.com/in/harsh-jha-0311/" },
     { label: "Walk the Pride Lands", value: "mufasa-ka-jungle",      href: "https://mufasa-ka-jungle.vercel.app" },
-    { label: "Unfurl the Scroll",  value: "Résumé · CV",             href: "#" },
+    { label: "Unfurl the Scroll",  value: "Résumé · CV",             href: "./assets/resume.pdf" },
   ],
 };

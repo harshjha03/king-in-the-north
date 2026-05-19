@@ -1,0 +1,1286 @@
+// Refined.jsx — Harsh Jha's portfolio.
+// Mythic dark-fantasy weight, restored. Real content from `data.js`.
+// Original heraldic sigil (abstract). Readable body (19px). Expandable case studies.
+
+const { useState, useRef, useEffect } = React;
+
+const REFINED_STYLE = `
+html, body { height: 100%; overflow: hidden; }
+
+:root {
+  --r-bg: #0a0604;
+  --r-bg-2: #15100c;
+  --r-bg-deep: #050201;
+  --r-fire: #c0392b;
+  --r-fire-bright: #e85a3c;
+  --r-fire-gold: #f39c12;
+  --r-fire-deep: #7b0000;
+  --r-gold: #d4a017;
+  --r-gold-soft: #c7a155;
+  --r-gold-bright: #f1c40f;
+  --r-parchment: #f5e6c8;
+  --r-parchment-dark: #e8d5a3;
+  --r-bone: #d4c4a0;
+  --r-text: #ece1c2;
+  --r-text-2: #b8a880;
+  --r-text-3: #7a6a48;
+  --r-rule: rgba(212,160,23,0.16);
+  --r-rule-strong: rgba(212,160,23,0.42);
+  --r-rule-fire: rgba(192,57,43,0.4);
+}
+
+.refined-root {
+  background: var(--r-bg);
+  color: var(--r-text);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.7;
+  height: 100svh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 76px;
+  scrollbar-width: none;
+  position: relative;
+}
+.refined-root::-webkit-scrollbar { display: none; }
+
+/* Light grain — kept low for readability */
+.refined-root::after {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  z-index: 1;
+}
+
+/* ── HEADER NAV ── */
+.r-nav {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: min(1460px, calc(100% - 32px));
+  background: linear-gradient(180deg, rgba(18,10,7,0.74), rgba(8,4,3,0.56));
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  backdrop-filter: blur(18px) saturate(1.25);
+  border: 1px solid rgba(212,160,23,0.18);
+  box-shadow:
+    0 18px 45px rgba(0,0,0,0.42),
+    inset 0 1px 0 rgba(245,230,200,0.08);
+  border-radius: 8px;
+  padding: 10px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px;
+}
+.r-nav-brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.r-glyph {
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  color: var(--r-fire);
+  flex-shrink: 0;
+}
+.r-nav-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--r-parchment);
+  white-space: nowrap;
+}
+.r-nav-words {
+  font-family: 'Cinzel', serif;
+  font-style: italic; font-size: 11px;
+  color: var(--r-gold-soft);
+  letter-spacing: 0.18em;
+  border-left: 1px solid var(--r-rule);
+  padding-left: 14px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.r-nav-links { display: flex; gap: 2px; font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; }
+.r-nav-link {
+  padding: 8px 14px;
+  color: var(--r-text-2);
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: all 0.2s;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+.r-nav-link:hover { color: var(--r-parchment); }
+.r-nav-link.active {
+  color: var(--r-fire-bright);
+  border-color: var(--r-rule-fire);
+  background: rgba(192,57,43,0.12);
+}
+.r-nav-cta {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 9px 20px;
+  border: 1px solid var(--r-rule-strong);
+  color: var(--r-gold);
+  background: rgba(192,57,43,0.08);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s;
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-block;
+}
+.r-nav-cta:hover { background: rgba(192,57,43,0.22); color: var(--r-parchment); border-color: var(--r-fire); }
+
+/* ── HERO — atmospheric ── */
+.r-hero {
+  height: 100svh;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 106px 32px 32px;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(192,57,43,0.12), transparent 55%),
+    radial-gradient(ellipse at 50% 85%, rgba(0,0,0,0.65), transparent 60%),
+    linear-gradient(180deg, var(--r-bg-deep), var(--r-bg));
+  overflow: hidden;
+}
+
+.r-hero::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0;
+  background: radial-gradient(ellipse at center,
+    transparent 30%,
+    rgba(0,0,0,0.45) 65%,
+    rgba(0,0,0,0.92) 100%);
+  pointer-events: none;
+}
+
+/* Breathing sigil ring */
+.r-sigil-ring {
+  position: absolute; top: 53%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(96vmin, 900px); height: min(96vmin, 900px);
+  border-radius: 50%;
+  border: 1px solid rgba(120,30,15,0.18);
+  box-shadow:
+    inset 0 0 100px rgba(100,20,10,0.22),
+    0 0 60px rgba(100,20,10,0.14),
+    0 0 180px rgba(80,15,5,0.08);
+  animation: r-dragon-ring-breathe 6.4s cubic-bezier(0.37, 0, 0.22, 1) infinite;
+  pointer-events: none; z-index: 0;
+}
+.r-sigil-ring-inner {
+  position: absolute; top: 53%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(68vmin, 650px); height: min(68vmin, 650px);
+  border-radius: 50%;
+  border: 1px solid rgba(212,160,23,0.12);
+  pointer-events: none; z-index: 0;
+}
+@keyframes r-dragon-ring-breathe {
+  0%, 100% {
+    opacity: 0.42;
+    transform: translate(-50%,-50%) scale(0.94);
+    box-shadow:
+      inset 0 0 80px rgba(100,20,10,0.20),
+      0 0 46px rgba(100,20,10,0.12),
+      0 0 150px rgba(80,15,5,0.06);
+  }
+  38% {
+    opacity: 0.92;
+    transform: translate(-50%,-50%) scale(1.025);
+    box-shadow:
+      inset 0 0 155px rgba(130,25,12,0.42),
+      0 0 115px rgba(120,22,10,0.26),
+      0 0 245px rgba(90,15,5,0.14);
+  }
+  55% {
+    opacity: 1;
+    transform: translate(-50%,-50%) scale(1.045);
+  }
+}
+
+.r-sigil {
+  position: absolute; top: 53%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(62vmin, 520px); height: min(62vmin, 520px);
+  color: #f02424;
+  opacity: 0.42;
+  pointer-events: none; z-index: 1;
+  transform-origin: center;
+  filter:
+    drop-shadow(0 0 24px rgba(192,57,43,0.18))
+    drop-shadow(0 0 60px rgba(120,10,0,0.12));
+  animation: r-dragon-sigil-breathe 6.4s cubic-bezier(0.37, 0, 0.22, 1) infinite;
+}
+.r-sigil-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  background: transparent;
+  mix-blend-mode: normal;
+  user-select: none;
+}
+@keyframes r-dragon-sigil-breathe {
+  0%, 100% {
+    transform: translate(-50%,-50%) scale(0.92) rotate(-0.35deg);
+    opacity: 0.34;
+    filter:
+      drop-shadow(0 0 20px rgba(192,57,43,0.14))
+      drop-shadow(0 0 46px rgba(100,0,0,0.10));
+  }
+  34% {
+    transform: translate(-50%,-50%) scale(1.035) rotate(0.25deg);
+    opacity: 0.72;
+    filter:
+      drop-shadow(0 0 56px rgba(192,57,43,0.30))
+      drop-shadow(0 0 120px rgba(140,0,0,0.16))
+      drop-shadow(0 0 180px rgba(70,0,0,0.10));
+  }
+  48% {
+    transform: translate(-50%,-50%) scale(1.055) rotate(0deg);
+    opacity: 0.86;
+  }
+  72% {
+    transform: translate(-50%,-50%) scale(0.985) rotate(-0.15deg);
+    opacity: 0.50;
+  }
+}
+
+.r-hero-inner {
+  position: relative; z-index: 3;
+  display: flex; flex-direction: column;
+  align-items: center; gap: clamp(10px, 1.9vh, 18px);
+  text-align: center;
+  width: min(100%, 820px);
+  max-width: 820px;
+}
+
+.r-hero-house {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(9px, 0.9vw, 11px);
+  letter-spacing: 0.65em;
+  color: var(--r-gold);
+  text-transform: uppercase;
+  text-shadow: none;
+  animation: r-fade-up 0.7s ease forwards 0.1s;
+  opacity: 0;
+}
+
+.r-hero-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(42px, 6.8vw, 88px);
+  font-weight: 700;
+  line-height: 1.0;
+  color: var(--r-parchment);
+  letter-spacing: 0.02em;
+  margin: 0;
+  text-shadow: 0 3px 18px rgba(0,0,0,0.98);
+  animation: r-fade-up 0.7s ease forwards 0.2s;
+  opacity: 0;
+}
+
+.r-hero-subtitle {
+  font-family: 'EB Garamond', serif;
+  font-size: clamp(15px, 1.55vw, 20px);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--r-text-2);
+  letter-spacing: 0.06em;
+  margin: 2px 0 0;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.85);
+  animation: r-fade-up 0.7s ease forwards 0.3s;
+  opacity: 0;
+}
+
+.r-hero-lore {
+  display: flex; flex-direction: column; gap: 10px;
+  width: min(100%, 780px);
+  margin-top: 10px;
+  animation: r-fade-up 0.7s ease forwards 0.42s;
+  opacity: 0;
+}
+
+.r-lore-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(20px, 2.1vw, 26px);
+  font-weight: 700;
+  color: var(--r-parchment);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+}
+.r-lore-epithets {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: clamp(14px, 1.35vw, 16px);
+  color: var(--r-text-2);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+.r-lore-aside {
+  font-style: normal;
+  color: var(--r-text-3);
+  font-size: 0.88em;
+  letter-spacing: 0.02em;
+}
+
+.r-hero-stats {
+  display: flex; align-items: center;
+  margin-top: 8px;
+  animation: r-fade-up 0.7s ease forwards 0.58s;
+  opacity: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.r-hero-stat { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 0 28px; white-space: nowrap; }
+.r-hero-stat-val {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(20px, 2.1vw, 27px);
+  font-weight: 700;
+  color: var(--r-gold);
+  line-height: 1;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+}
+.r-hero-stat-lbl {
+  font-family: 'Cinzel', serif;
+  font-size: 9px; letter-spacing: 0.32em;
+  text-transform: uppercase; color: var(--r-text-3);
+}
+.r-hero-stat-sep { width: 1px; height: 28px; background: rgba(212,160,23,0.18); }
+
+.r-hero-cue {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Cinzel', serif;
+  font-size: 9px; letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  margin-top: 10px;
+  animation: r-scroll-cue 2.5s ease-in-out infinite;
+}
+@keyframes r-scroll-cue {
+  0%, 100% { opacity: 0.25; transform: translateY(0); }
+  50% { opacity: 0.75; transform: translateY(6px); }
+}
+@keyframes r-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-height: 820px) and (min-width: 901px) {
+  .r-nav { top: 14px; padding-top: 9px; padding-bottom: 9px; }
+  .r-hero { padding-top: 92px; padding-bottom: 24px; }
+  .r-hero-title { font-size: clamp(40px, 6.2vw, 76px); }
+  .r-hero-subtitle { font-size: clamp(13px, 1.4vw, 18px); }
+  .r-hero-lore { padding-top: 12px; padding-bottom: 12px; }
+  .r-lore-name { font-size: clamp(18px, 1.9vw, 23px); }
+  .r-hero-cue { display: none; }
+}
+
+/* ── DIVIDER ── */
+.r-divider {
+  display: flex; align-items: center; gap: 18px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.r-divider::before, .r-divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--r-rule-strong), transparent);
+}
+.r-divider span {
+  color: var(--r-fire);
+  font-size: 13px;
+  text-shadow: 0 0 14px rgba(192,57,43,0.6);
+}
+
+/* ── SEASON ── */
+.r-season {
+  height: 100svh;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overflow: hidden;
+  position: relative;
+}
+.r-season-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.32;
+  z-index: 0;
+  animation: r-season-pan 40s ease-in-out infinite alternate;
+}
+@keyframes r-season-pan {
+  from { transform: translateX(-0.8%); }
+  to   { transform: translateX(0.8%); }
+}
+.r-season::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 1;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(192,57,43,0.12), transparent 45%),
+    linear-gradient(180deg, var(--r-bg) 0%, transparent 18%, transparent 82%, var(--r-bg) 100%);
+  pointer-events: none;
+}
+.r-season-inner {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  padding: 18px clamp(16px, 4vw, 56px) 40px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(192,57,43,0.2) transparent;
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+}
+.r-season-inner::-webkit-scrollbar { width: 3px; }
+.r-season-inner::-webkit-scrollbar-thumb { background: rgba(192,57,43,0.2); border-radius: 2px; }
+.r-season-header { padding: 0 0 10px; position: relative; }
+.r-season-number {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; letter-spacing: 0.4em;
+  color: var(--r-fire); text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 14px;
+}
+.r-season-number::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--r-rule-fire), transparent);
+}
+.r-season-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  color: var(--r-parchment);
+  margin: 0 0 12px;
+  line-height: 1.15;
+  text-shadow: 0 0 30px rgba(192,57,43,0.2);
+}
+.r-season-lore {
+  font-style: italic;
+  font-size: 17px;
+  color: var(--r-text-2);
+  max-width: 640px;
+  line-height: 1.6;
+  position: relative;
+  padding-left: 16px;
+  border-left: 2px solid var(--r-rule-fire);
+}
+
+/* ── CARDS ── */
+.r-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 14px;
+  padding: 8px 0 20px;
+  width: 100%;
+}
+/* 1 card → centred, capped width */
+.r-cards[data-count="1"] {
+  grid-template-columns: minmax(min(100%, 260px), 420px);
+  justify-content: center;
+}
+/* 4 cards → 2×2 */
+.r-cards[data-count="4"] {
+  grid-template-columns: repeat(2, 1fr);
+}
+/* 5 cards → 3 top, 2 centred bottom (all equal width via 6-col base) */
+.r-cards[data-count="5"] {
+  grid-template-columns: repeat(6, 1fr);
+}
+.r-cards[data-count="5"] .r-card {
+  grid-column: span 2;
+}
+.r-cards[data-count="5"] .r-card:nth-child(4) {
+  grid-column: 2 / span 2;
+}
+.r-cards[data-count="5"] .r-card:nth-child(5) {
+  grid-column: 4 / span 2;
+}
+.r-card {
+  background: rgba(255,255,255,0.025);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  padding: 22px 22px 18px;
+  cursor: pointer;
+  transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s, background 0.2s, border-color 0.2s;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 4px 20px rgba(0,0,0,0.35);
+  display: flex; flex-direction: column; gap: 12px;
+  position: relative; overflow: hidden;
+}
+.r-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  pointer-events: none;
+}
+.r-card:hover {
+  transform: scale(1.04) translateY(-3px);
+  background: rgba(255,255,255,0.055);
+  border-color: rgba(192,57,43,0.35);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 12px 36px rgba(0,0,0,0.55), 0 0 24px rgba(192,57,43,0.1);
+}
+.r-card-top {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
+}
+.r-card-duration {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; letter-spacing: 0.12em;
+  color: var(--r-fire-gold);
+}
+.r-card-type {
+  font-family: 'Cinzel', serif;
+  font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--r-text-3);
+  text-align: right; line-height: 1.4;
+}
+.r-card-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(13px, 1.25vw, 16px);
+  color: var(--r-parchment);
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  transition: color 0.2s;
+}
+.r-card:hover .r-card-title { color: var(--r-fire-gold); }
+.r-card-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.r-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--r-text-2);
+  padding: 3px 8px;
+  border: 1px solid var(--r-rule);
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.r-tag.fire {
+  color: var(--r-fire-bright);
+  border-color: var(--r-rule-fire);
+  background: rgba(192,57,43,0.08);
+}
+.r-card-impact {
+  display: flex; align-items: baseline; gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: auto;
+}
+.r-card-impact-val {
+  font-family: 'Cinzel', serif;
+  font-size: 17px; font-weight: 700;
+  color: var(--r-fire-bright); line-height: 1;
+}
+.r-card-impact-lbl {
+  font-size: 9px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--r-text-3);
+}
+
+/* ── MODAL ── */
+.r-modal-overlay {
+  position: fixed; inset: 0; z-index: 1100;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(12px) saturate(80%);
+  -webkit-backdrop-filter: blur(12px) saturate(80%);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  cursor: pointer;
+  animation: r-fade-in 0.2s ease;
+}
+@keyframes r-fade-in { from { opacity: 0; } to { opacity: 1; } }
+.r-modal {
+  cursor: default;
+  position: relative;
+  width: min(860px, 100%);
+  max-height: 86vh;
+  overflow-y: auto;
+  border-radius: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100,50,10,0.35) transparent;
+  transform-origin: center center;
+  /* Real parchment photo */
+  background-color: #c9a878;
+  background-image: url('${window.__resources.parchmentBg}');
+  background-size: cover;
+  background-position: center center;
+  border-top: 1px solid rgba(72,44,8,0.45);
+  border-left: 1px solid rgba(72,44,8,0.22);
+  border-right: 1px solid rgba(72,44,8,0.22);
+  border-bottom: 1px solid rgba(72,44,8,0.22);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.28),
+    0 32px 100px rgba(0,0,0,0.85),
+    0 0 60px rgba(192,57,43,0.08),
+    inset 0 1px 0 rgba(248,235,200,0.30);
+  animation: r-modal-unfold 0.45s cubic-bezier(0.34,1.2,0.64,1);
+}
+@keyframes r-modal-unfold {
+  0%   { transform: scaleY(0.04); opacity: 0.85; }
+  55%  { transform: scaleY(1.025); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+.r-modal::-webkit-scrollbar { width: 3px; }
+.r-modal::-webkit-scrollbar-thumb { background: rgba(100,50,10,0.35); border-radius: 2px; }
+/* Scroll-top seal bar */
+.r-modal::before {
+  content: '⚜';
+  position: sticky; top: 0; left: 0; right: 0;
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  color: rgba(90,52,12,0.72);
+  background: linear-gradient(180deg, rgba(205,172,115,0.99) 0%, rgba(205,172,115,0.82) 65%, transparent 100%);
+  padding: 10px 0 6px;
+  letter-spacing: 0.4em;
+  pointer-events: none;
+  z-index: 4;
+}
+.r-modal-close {
+  position: sticky; top: 14px; left: 100%;
+  float: right;
+  margin: -32px 16px 0 0;
+  background: rgba(30,12,2,0.14);
+  border: 1px solid rgba(60,28,5,0.45);
+  border-radius: 2px;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: #1c0d04;
+  font-size: 12px; z-index: 10;
+  transition: background 0.2s, color 0.2s;
+  font-family: 'Cinzel', serif;
+}
+.r-modal-close:hover { background: rgba(30,12,2,0.28); color: #0a0402; }
+.r-modal-header {
+  padding: 8px 52px 18px 32px;
+  border-bottom: 1px solid rgba(80,35,5,0.22);
+  position: relative;
+}
+.r-modal-header::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 32px; right: 32px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(120,50,5,0.45), transparent);
+}
+.r-modal-season {
+  font-family: 'Cinzel', serif;
+  font-size: 10px; letter-spacing: 0.45em;
+  text-transform: uppercase; color: #5a1208;
+  margin-bottom: 10px;
+}
+.r-modal-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(17px, 2.2vw, 24px);
+  color: #0f0603; margin: 0;
+  font-weight: 700; line-height: 1.25;
+}
+.r-modal-body {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 36px;
+  padding: 24px 32px 44px;
+}
+.r-modal-side { display: flex; flex-direction: column; gap: 0; }
+.r-scroll-lore {
+  font-style: italic; color: #2a1206;
+  font-size: 15px; line-height: 1.55;
+  padding: 16px 18px; border: 1px solid rgba(80,35,5,0.28);
+  background: rgba(30,12,2,0.09); margin-bottom: 1px;
+  position: relative;
+}
+.r-scroll-lore::before {
+  content: '”'; position: absolute; top: 0; left: 8px;
+  font-family: 'Cinzel Decorative', serif; color: var(--r-fire);
+  font-size: 28px; line-height: 1;
+}
+.r-scroll-lore-content { padding-top: 4px; }
+.r-scroll-metrics {
+  display: grid; grid-template-columns: 1fr;
+  gap: 1px; background: rgba(80,35,5,0.22);
+  border: 1px solid rgba(80,35,5,0.22);
+}
+.r-scroll-metric {
+  background: rgba(255,240,180,0.35);
+  padding: 12px 16px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.r-scroll-metric-val {
+  font-family: 'Cinzel', serif;
+  font-size: 18px; font-weight: 700;
+  color: #c0392b; line-height: 1;
+}
+.r-scroll-metric-lbl {
+  font-size: 9px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: #4a2608;
+}
+.r-scroll-body { min-width: 0; }
+.r-scroll-section { margin-bottom: 26px; }
+.r-scroll-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: #3a1c06;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.r-scroll-section-title::before { content: '⚔'; color: var(--r-fire); font-size: 13px; }
+.r-scroll-text {
+  font-size: 16px; line-height: 1.75;
+  color: #1c0d04; margin: 0;
+}
+.r-scroll-link {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Cinzel', serif;
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #c0392b; text-decoration: none;
+  border: 1px solid rgba(192,57,43,0.45); padding: 10px 18px; margin-top: 16px;
+  transition: all 0.2s;
+}
+.r-scroll-link:hover { background: rgba(192,57,43,0.15); color: #100804; }
+
+/* ── OATH / CONTACT ── */
+.r-oath {
+  height: 100svh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  padding: 92px 32px 80px;
+  text-align: center;
+  position: relative;
+  border-top: 1px solid var(--r-rule);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--r-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+/* Immersive battle backdrop — recolored sword-and-riders image */
+.r-oath-bg {
+  position: absolute;
+  inset: 0;
+  background: url('${window.__resources.oathBg}') center 30% / cover no-repeat;
+  opacity: 0.58;
+  z-index: 0;
+  animation: r-oath-pan 30s ease-in-out infinite alternate;
+}
+@keyframes r-oath-pan {
+  from { transform: scale(1.05) translateX(-1.5%); }
+  to   { transform: scale(1.10) translateX(1.5%);  }
+}
+/* Vignette overlay — keeps text legible over the image */
+.r-oath::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 1;
+  background:
+    radial-gradient(ellipse 65% 55% at 50% 52%, transparent 0%, rgba(10,6,4,0.45) 35%, rgba(10,6,4,0.92) 80%),
+    radial-gradient(ellipse at 50% 0%, rgba(192,57,43,0.28), transparent 55%),
+    linear-gradient(180deg, var(--r-bg) 0%, transparent 14%, transparent 86%, var(--r-bg) 100%);
+  pointer-events: none;
+}
+/* “Fire cannot kill a dragon” floating quote, top */
+.r-oath::after {
+  content: '” Fire cannot kill a dragon. “';
+  position: absolute; top: 80px; left: 50%;
+  transform: translateX(-50%);
+  font-style: italic; font-size: clamp(11px, 1.1vw, 13px);
+  color: var(--r-gold-soft); letter-spacing: 0.18em;
+  white-space: nowrap;
+  z-index: 3;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.95);
+}
+.r-oath > *:not(.r-oath-bg):not(.r-foot) { position: relative; z-index: 2; }
+.r-oath-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(26px, 3.7vw, 42px);
+  color: var(--r-parchment);
+  margin: 0 0 14px;
+  line-height: 1.12;
+  font-weight: 700;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.95), 0 0 40px rgba(192,57,43,0.3);
+  white-space: pre-line;
+}
+.r-oath-text {
+  font-style: italic;
+  font-size: clamp(16px, 1.6vw, 18px);
+  color: var(--r-parchment);
+  max-width: 560px;
+  margin: 0 auto 28px;
+  line-height: 1.45;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.9);
+}
+.r-oath-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  width: min(860px, 100%);
+  margin: 0 auto;
+}
+.r-oath-link {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  text-decoration: none;
+  padding: 28px 30px;
+  border: none; border-radius: 0;
+  position: relative; overflow: hidden;
+  transition: transform 0.25s, filter 0.25s;
+
+  /* Mid-golden parchment base */
+  background-color: #c8922a;
+  background-image:
+    /* Paper grain */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.11'/%3E%3C/svg%3E"),
+    /* Heavy corner burns — the most characteristic parchment feature */
+    radial-gradient(ellipse 62% 62% at   0%   0%, rgba(30,10,1,0.96) 0%, rgba(90,40,5,0.65) 30%, transparent 62%),
+    radial-gradient(ellipse 62% 62% at 100%   0%, rgba(30,10,1,0.93) 0%, rgba(90,40,5,0.60) 30%, transparent 62%),
+    radial-gradient(ellipse 62% 62% at   0% 100%, rgba(30,10,1,0.96) 0%, rgba(90,40,5,0.65) 30%, transparent 62%),
+    radial-gradient(ellipse 62% 62% at 100% 100%, rgba(30,10,1,0.96) 0%, rgba(90,40,5,0.65) 30%, transparent 62%),
+    /* Edge burns */
+    radial-gradient(ellipse 100% 32% at 50%   0%, rgba(80,35,4,0.62) 0%, rgba(110,58,8,0.28) 55%, transparent 100%),
+    radial-gradient(ellipse 100% 32% at 50% 100%, rgba(80,35,4,0.68) 0%, rgba(110,58,8,0.30) 55%, transparent 100%),
+    radial-gradient(ellipse  32% 100% at   0% 50%, rgba(80,35,4,0.58) 0%, rgba(110,58,8,0.25) 55%, transparent 100%),
+    radial-gradient(ellipse  32% 100% at 100% 50%, rgba(80,35,4,0.58) 0%, rgba(110,58,8,0.25) 55%, transparent 100%),
+    /* Bright centre highlight */
+    radial-gradient(ellipse 58% 58% at 50% 48%, rgba(255,248,210,0.58) 0%, transparent 100%),
+    /* Warm mid-tone base gradient */
+    linear-gradient(148deg, #b87c1a 0%, #d4a030 20%, #eaca60 42%, #f8ee9a 54%, #eaca60 66%, #d09828 82%, #b07818 100%);
+
+  /* Worn organic edge — gentle wave, not sharp tear */
+  clip-path: polygon(
+    0% 2%,   4% 0.5%, 8% 2.5%, 13% 0%,   18% 2%,   23% 0.5%, 28% 2%,   33% 0%,
+    38% 2%,  43% 0.5%,48% 2%,  53% 0%,   58% 2.5%, 63% 0.5%, 68% 2%,   73% 0%,
+    78% 2%,  83% 0.5%,88% 2.5%,93% 0%,   98% 2%,   100% 0.5%,
+    100% 4%, 98% 9%,  100% 14%,98.5% 19%,100% 25%, 98% 30%,  100% 35%,98.5% 41%,
+    100% 46%,98% 51%, 100% 57%,98.5% 62%,100% 67%, 98% 73%,  100% 78%,98.5% 84%,
+    100% 90%,98% 95%, 100% 99%,
+    97% 100%,92% 98%, 87% 100%,82% 97.5%,77% 100%,72% 98%,  67% 100%,62% 97.5%,
+    57% 100%,52% 98%, 47% 100%,42% 97.5%,37% 100%,32% 98%,  27% 100%,22% 97.5%,
+    17% 100%,12% 98%, 7% 100%, 2% 97.5%, 0% 99.5%,
+    0% 96%,  2% 91%,  0% 86%,  2% 81%,   0% 76%,   2% 71%,   0% 66%,   2% 61%,
+    0% 56%,  2% 51%,  0% 46%,  2% 41%,   0% 36%,   2% 31%,   0% 26%,   2% 21%,
+    0% 16%,  2% 11%,  0% 6%
+  );
+  filter: drop-shadow(0 6px 20px rgba(0,0,0,0.65)) drop-shadow(0 2px 6px rgba(0,0,0,0.40));
+}
+/* Extra mottled aging across the face */
+.r-oath-link::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 40% 30% at 25% 70%, rgba(80,38,4,0.18) 0%, transparent 100%),
+    radial-gradient(ellipse 35% 25% at 72% 28%, rgba(255,245,195,0.22) 0%, transparent 100%),
+    radial-gradient(ellipse 30% 20% at 60% 75%, rgba(80,38,4,0.12) 0%, transparent 100%);
+}
+.r-oath-link > * { position: relative; z-index: 1; }
+
+/* Variant B — slightly different wave rhythm for odd cards */
+.r-oath-link:nth-child(odd) {
+  clip-path: polygon(
+    0% 1%,   3% 2.5%, 7% 0%,   12% 2%,   17% 0.5%,22% 2.5%, 27% 0%,   32% 2%,
+    37% 0.5%,42% 2.5%,47% 0%,  52% 2%,   57% 0.5%,62% 2.5%, 67% 0%,   72% 2%,
+    77% 0.5%,82% 2.5%,87% 0%,  92% 2%,   97% 0.5%,100% 2%,
+    100% 5%, 98.5% 10%,100% 16%,98% 21%,  100% 27%,98.5% 32%,100% 38%,98% 43%,
+    100% 49%,98.5% 54%,100% 60%,98% 65%,  100% 71%,98.5% 76%,100% 82%,98% 87%,
+    100% 93%,98.5% 98%,
+    100% 100%,95% 98%,90% 100%,85% 98%,   80% 100%,75% 97.5%,70% 100%,65% 98%,
+    60% 100%,55% 97.5%,50% 100%,45% 98%, 40% 100%,35% 97.5%,30% 100%,25% 98%,
+    20% 100%,15% 97.5%,10% 100%,5% 98%,  0% 100%,
+    0% 97%,  1.5% 92%,0% 87%,  2% 82%,   0% 77%,   1.5% 72%, 0% 67%,   2% 62%,
+    0% 57%,  1.5% 52%,0% 47%,  2% 42%,   0% 37%,   1.5% 32%, 0% 27%,   2% 22%,
+    0% 17%,  1.5% 12%,0% 7%,   2% 2%
+  );
+}
+.r-oath-link:hover {
+  transform: translateY(-4px) scale(1.06) rotate(0.3deg);
+  filter: drop-shadow(0 12px 28px rgba(0,0,0,0.72)) drop-shadow(0 4px 8px rgba(0,0,0,0.45));
+}
+.r-oath-link-label {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(10px, 0.95vw, 12px);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #1e0c02;
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgba(255,240,180,0.35);
+}
+.r-oath-link-value {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(12px, 1.1vw, 14px);
+  color: rgba(30,12,2,0.55);
+  letter-spacing: 0.03em;
+}
+
+@media (max-height: 820px) and (min-width: 901px) {
+  .r-oath { padding-top: 78px; padding-bottom: 70px; }
+  .r-oath::after { top: 76px; }
+  .r-oath-title { font-size: clamp(24px, 3.2vw, 36px); margin-bottom: 10px; }
+  .r-oath-text { margin-bottom: 20px; line-height: 1.35; }
+  .r-oath-link { padding: 10px 16px; }
+}
+
+.r-foot {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  z-index: 3;
+  border-top: 1px solid var(--r-rule);
+  padding: 18px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: 'Cinzel', serif;
+  font-size: 11px; letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--r-text-3);
+  background: linear-gradient(0deg, var(--r-bg) 70%, transparent);
+}
+.r-foot-left { text-align: left; }
+.r-foot-words { color: var(--r-fire); text-align: right; }
+
+@media (max-width: 900px) {
+  .r-nav {
+    top: 10px;
+    width: calc(100% - 20px);
+    padding: 10px 14px;
+    gap: 12px;
+  }
+  .r-nav-links, .r-nav-words { display: none; }
+  .r-nav-name { font-size: 11px; letter-spacing: 0.2em; }
+  .r-nav-cta { padding: 9px 12px; font-size: 10px; letter-spacing: 0.14em; }
+  .r-hero { padding: 92px 16px 34px; }
+  .r-hero-lore { padding: 16px 16px; }
+  .r-season-inner { padding: 16px 16px 32px; }
+  .r-cards,
+  .r-cards[data-count="4"],
+  .r-cards[data-count="5"] { grid-template-columns: 1fr; gap: 12px; }
+  .r-cards[data-count="5"] .r-card,
+  .r-cards[data-count="5"] .r-card:nth-child(4),
+  .r-cards[data-count="5"] .r-card:nth-child(5) { grid-column: span 1; }
+  .r-modal-overlay { padding: 0; align-items: flex-end; }
+  .r-modal {
+    width: 100%; max-height: 92vh;
+    border-radius: 16px 16px 0 0;
+    animation: r-modal-in-mobile 0.32s cubic-bezier(0.34,1.4,0.64,1);
+  }
+  @keyframes r-modal-in-mobile {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .r-modal-header { padding: 24px 48px 16px 18px; }
+  .r-modal-body { grid-template-columns: 1fr; gap: 20px; padding: 18px 18px 36px; }
+  .r-hero-stats { flex-direction: column; gap: 14px; }
+  .r-hero-stat { padding: 8px 0; }
+  .r-hero-stat-sep { width: 40px; height: 1px; }
+  .r-oath { height: 100svh; padding: 78px 16px 70px; }
+  .r-oath::after {
+    top: 76px;
+    max-width: calc(100% - 32px);
+    white-space: normal;
+    line-height: 1.35;
+  }
+  .r-oath-title { font-size: clamp(22px, 7vw, 32px); }
+  .r-oath-text { margin-bottom: 20px; }
+  .r-oath-links { grid-template-columns: 1fr; width: 100%; }
+  .r-oath-link { padding: 14px 16px; }
+  .r-season-bg { background-size: cover; }
+}
+
+@media (min-width: 901px) and (max-width: 1200px) {
+  .r-cards { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+}
+`;
+
+/* ── Heraldic sigil — original abstract flame medallion ───────────
+ * NOT a recreation of any copyrighted dragon sigil. Concentric rings
+ * + radiating flames + central diamond eye — reads as ancient heraldry. */
+function RefinedSigil({ size = 32, color = "currentColor", detailed = false }) {
+  if (!detailed) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden>
+        <circle cx="16" cy="16" r="14.5" stroke={color} strokeWidth="0.8" opacity="0.7"/>
+        <circle cx="16" cy="16" r="10"   stroke={color} strokeWidth="0.5" opacity="0.4"/>
+        <path d="M16 7 L20.5 16 L16 14 L11.5 16 Z" fill={color}/>
+        <path d="M16 14 L18.5 22 L16 20 L13.5 22 Z" fill={color} opacity="0.7"/>
+        <circle cx="16" cy="16" r="1" fill={color}/>
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 200 200" fill="none" aria-hidden xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="95" stroke={color} strokeWidth="0.6" opacity="0.45"/>
+      <circle cx="100" cy="100" r="88" stroke={color} strokeWidth="1.4" opacity="0.85"/>
+      <circle cx="100" cy="100" r="82" stroke={color} strokeWidth="0.4" opacity="0.4"/>
+      {[0, 90, 180, 270].map(deg => (
+        <g key={deg} transform={`rotate(${deg} 100 100)`}>
+          <path d="M100 14 L106 36 L100 30 L94 36 Z" fill={color} opacity="0.95"/>
+          <path d="M100 30 L103 44 L100 40 L97 44 Z" fill={color} opacity="0.6"/>
+        </g>
+      ))}
+      {[45, 135, 225, 315].map(deg => (
+        <g key={deg} transform={`rotate(${deg} 100 100)`}>
+          <path d="M100 22 L104 38 L100 34 L96 38 Z" fill={color} opacity="0.55"/>
+        </g>
+      ))}
+      <circle cx="100" cy="100" r="55" stroke={color} strokeWidth="0.7" opacity="0.6"/>
+      <circle cx="100" cy="100" r="48" stroke={color} strokeWidth="0.3" opacity="0.3"/>
+      <path d="M100 60 L138 100 L100 140 L62 100 Z" fill="none" stroke={color} strokeWidth="1.2" opacity="0.9"/>
+      <path d="M100 72 L128 100 L100 128 L72 100 Z" fill={color} opacity="0.15"/>
+      <path d="M100 84 L116 100 L100 116 L84 100 Z" fill={color} opacity="0.95"/>
+      <circle cx="100" cy="100" r="3.5" fill="#0a0604"/>
+      <circle cx="100" cy="100" r="1.5" fill={color}/>
+      {[0, 45, 90, 135, 180, 225, 270, 315].map(deg => (
+        <g key={deg} transform={`rotate(${deg} 100 100)`}>
+          <rect x="99.5" y="49" width="1" height="6" fill={color} opacity="0.6"/>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function Tag({ tag }) {
+  if (typeof tag === 'string') return <span className="r-tag">{tag}</span>;
+  return <span className={`r-tag ${tag.fire ? 'fire' : ''}`}>{tag.label}</span>;
+}
+
+function Card({ track, data, onOpen }) {
+  const cs = data.caseStudies[track.id];
+  const metric = cs?.metrics?.[0];
+  return (
+    <div className="r-card" onClick={() => onOpen(track.id)}>
+      <div className="r-card-top">
+        <span className="r-card-duration">{track.duration}</span>
+        <span className="r-card-type">{track.type}</span>
+      </div>
+      <h3 className="r-card-title">{track.title}</h3>
+      <div className="r-card-tags">
+        {track.tags.map((t, i) => <Tag key={i} tag={t} />)}
+      </div>
+      {metric && (
+        <div className="r-card-impact">
+          <span className="r-card-impact-val">{metric.val}</span>
+          <span className="r-card-impact-lbl">{metric.lbl}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Modal({ id, data, onClose }) {
+  const cs = data.caseStudies[id];
+  if (!id || !cs) return null;
+  return (
+    <div className="r-modal-overlay" onClick={onClose}>
+      <div className="r-modal" onClick={e => e.stopPropagation()}>
+        <button className="r-modal-close" onClick={onClose}>✕</button>
+        <div className="r-modal-header">
+          <div className="r-modal-season">{cs.season}</div>
+          <h2 className="r-modal-title">{cs.title}</h2>
+        </div>
+        <div className="r-modal-body">
+          <aside className="r-modal-side">
+            <div className="r-scroll-lore">
+              <div className="r-scroll-lore-content">{cs.lore}</div>
+            </div>
+            <div className="r-scroll-metrics">
+              {cs.metrics.map((m, i) => (
+                <div key={i} className="r-scroll-metric">
+                  <div className="r-scroll-metric-val">{m.val}</div>
+                  <div className="r-scroll-metric-lbl">{m.lbl}</div>
+                </div>
+              ))}
+            </div>
+            {cs.link && (
+              <a className="r-scroll-link" href={cs.link} target="_blank" rel="noreferrer">
+                Visit the Realm →
+              </a>
+            )}
+          </aside>
+          <div className="r-scroll-body">
+            {cs.sections.map((s, i) => (
+              <div key={i} className="r-scroll-section">
+                <div className="r-scroll-section-title">{s.title}</div>
+                <p className="r-scroll-text">{s.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HeroSigil() {
+  return (
+    <img
+      className="r-sigil-img"
+      src={window.__resources.dragonSigil}
+      alt=""
+      aria-hidden="true"
+    />
+  );
+}
+
+function RefinedPortfolio({ data, density = "regular" }) {
+  const [selectedId, setSelectedId] = useState(null);
+  const [activeSection, setActiveSection] = useState("sigil");
+  const refs = {
+    sigil: useRef(null),
+    season1: useRef(null),
+    season2: useRef(null),
+    season3: useRef(null),
+    season4: useRef(null),
+    oath: useRef(null),
+  };
+
+  const goTo = (key) => {
+    setActiveSection(key);
+    refs[key].current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  useEffect(() => {
+    const keys = ['sigil', 'season1', 'season2', 'season3', 'season4', 'oath'];
+    const container = document.querySelector('.refined-root');
+    const onScroll = () => {
+      let current = keys[0];
+      for (const k of keys) {
+        if (!refs[k].current) continue;
+        if (refs[k].current.getBoundingClientRect().top <= 80) current = k;
+      }
+      setActiveSection(current);
+    };
+    container?.addEventListener('scroll', onScroll, { passive: true });
+    return () => container?.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') setSelectedId(null); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
+
+  const fontSize = density === "compact" ? 17 : density === "comfy" ? 21 : 19;
+
+  return (
+    <div className="refined-root" style={{ fontSize }}>
+      <style>{REFINED_STYLE}</style>
+
+      {/* ── NAV ── */}
+      <nav className="r-nav">
+        <div className="r-nav-brand">
+          <div className="r-glyph"><RefinedSigil size={28} color="var(--r-fire)" /></div>
+          <div className="r-nav-name">{data.identity.name}</div>
+          <div className="r-nav-words">{data.identity.words}</div>
+        </div>
+        <div className="r-nav-links">
+          <button className={`r-nav-link ${activeSection === 'sigil' ? 'active' : ''}`} onClick={() => goTo('sigil')}>Sigil</button>
+          <button className={`r-nav-link ${activeSection === 'season1' ? 'active' : ''}`} onClick={() => goTo('season1')}>Season I</button>
+          <button className={`r-nav-link ${activeSection === 'season2' ? 'active' : ''}`} onClick={() => goTo('season2')}>II</button>
+          <button className={`r-nav-link ${activeSection === 'season3' ? 'active' : ''}`} onClick={() => goTo('season3')}>III</button>
+          <button className={`r-nav-link ${activeSection === 'season4' ? 'active' : ''}`} onClick={() => goTo('season4')}>IV · Pet</button>
+          <button className={`r-nav-link ${activeSection === 'oath' ? 'active' : ''}`} onClick={() => goTo('oath')}>Raven</button>
+        </div>
+        <a className="r-nav-cta" href={data.identity.resumeUrl} download>Resume ↓</a>
+      </nav>
+
+      {/* ── HERO ── */}
+      <section ref={refs.sigil} className="r-hero">
+        <div className="r-sigil-ring" />
+        <div className="r-sigil-ring-inner" />
+        <div className="r-sigil"><HeroSigil /></div>
+
+        <div className="r-hero-inner">
+          <div className="r-hero-house">{data.identity.house}</div>
+          <h1 className="r-hero-title">{data.identity.title}</h1>
+          <h2 className="r-hero-subtitle">{data.identity.subtitle}</h2>
+
+          <div className="r-hero-lore">
+            <div className="r-lore-name">{data.identity.name}</div>
+            <div className="r-lore-epithets">
+              {data.identity.epithets}{' '}
+              <span className="r-lore-aside">{data.identity.epithetsAside}</span>
+            </div>
+          </div>
+
+          <div className="r-hero-stats">
+            {data.heroStats.map((s, i) => (
+              <React.Fragment key={i}>
+                {i > 0 && <div className="r-hero-stat-sep" />}
+                <div className="r-hero-stat">
+                  <div className="r-hero-stat-val">{s.val}</div>
+                  <div className="r-hero-stat-lbl">{s.lbl}</div>
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+
+          <div className="r-hero-cue">
+            <span>Scroll to Begin the Chronicles</span>
+            <span style={{ fontSize: 14 }}>↓</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SEASONS ── */}
+      {data.seasons.map((season, si) => (
+        <section key={si} ref={refs[`season${si + 1}`]} className="r-season">
+          <div className="r-season-bg" style={{ backgroundImage: `url('${window.__resources['season' + (si + 1) + 'Bg']}')` }} />
+          <div className="r-season-inner">
+            <header className="r-season-header">
+              <div className="r-season-number">Season {season.number}</div>
+              <h2 className="r-season-title">{season.title}</h2>
+              <p className="r-season-lore">{season.lore}</p>
+            </header>
+            <div className="r-cards" data-count={season.tracks.length}>
+              {season.tracks.map((track) => (
+                <Card
+                  key={track.id}
+                  track={track}
+                  data={data}
+                  onOpen={setSelectedId}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      ))}
+
+      {/* ── OATH / CONTACT ── */}
+      <section ref={refs.oath} className="r-oath">
+        <div className="r-oath-bg" />
+        <h2 className="r-oath-title">{data.oath.title}</h2>
+        <p className="r-oath-text">{data.oath.text}</p>
+        <div className="r-oath-links">
+          {data.links.map((l, i) => (
+            <a key={i} href={l.href}
+               className="r-oath-link"
+               target={l.href.startsWith('http') ? '_blank' : undefined}
+               rel={l.href.startsWith('http') ? 'noreferrer' : undefined}>
+              <span className="r-oath-link-label">{l.label}</span>
+              <span className="r-oath-link-value">{l.value}</span>
+            </a>
+          ))}
+        </div>
+        <footer className="r-foot">
+          <div className="r-foot-left">© 2026 {data.identity.name}, of House Growth · First of His Name · Builder of Products</div>
+          <div className="r-foot-words">{data.identity.title} · {data.identity.words}</div>
+        </footer>
+      </section>
+
+      {selectedId && <Modal id={selectedId} data={data} onClose={() => setSelectedId(null)} />}
+    </div>
+  );
+}
+
+window.RefinedPortfolio = RefinedPortfolio;
+window.RefinedSigil = RefinedSigil;

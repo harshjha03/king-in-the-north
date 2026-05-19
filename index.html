@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harsh - Portfolio</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #07080a; color: #ebe1c8; }
+    body { font-family: Georgia, serif; overflow-x: hidden; }
+    #app { min-height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    window.__resources = {
+      oathBg: './assets/raven.png',
+      dragonSigil: './assets/dragon-sigil.png',
+      season1Bg: './assets/season%201.png',
+      season2Bg: './assets/season%202.png',
+      season3Bg: './assets/season%203.png',
+      season4Bg: './assets/season%204.png',
+      parchmentBg: './assets/parchment.jpg',
+    };
+  </script>
+  <script src="./vendor/react.production.min.js"></script>
+  <script src="./vendor/react-dom.production.min.js"></script>
+  <script src="./vendor/babel.min.js"></script>
+  <script src="./src/data.js"></script>
+  <script type="text/babel" src="./src/RefinedPortfolio.jsx"></script>
+  <script type="text/babel" src="./src/app.jsx"></script>
+</body>
+</html>

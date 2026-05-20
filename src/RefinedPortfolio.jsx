@@ -137,7 +137,7 @@ html, body { height: 100%; overflow: hidden; }
 
 /* ── HERO — atmospheric ── */
 .r-hero {
-  height: 100svh;
+  min-height: 100svh;
   flex-shrink: 0;
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -279,7 +279,7 @@ html, body { height: 100%; overflow: hidden; }
 
 .r-hero-title {
   font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(42px, 6.8vw, 88px);
+  font-size: clamp(28px, 6.8vw, 88px);
   font-weight: 700;
   line-height: 1.0;
   color: var(--r-parchment);
@@ -379,11 +379,12 @@ html, body { height: 100%; overflow: hidden; }
 
 @media (max-height: 820px) and (min-width: 901px) {
   .r-nav { top: 14px; padding-top: 9px; padding-bottom: 9px; }
-  .r-hero { padding-top: 92px; padding-bottom: 24px; }
-  .r-hero-title { font-size: clamp(40px, 6.2vw, 76px); }
+  .r-hero { padding-top: 88px; padding-bottom: 24px; }
+  .r-hero-title { font-size: clamp(32px, 6.2vw, 76px); }
   .r-hero-subtitle { font-size: clamp(13px, 1.4vw, 18px); }
-  .r-hero-lore { padding-top: 12px; padding-bottom: 12px; }
-  .r-lore-name { font-size: clamp(18px, 1.9vw, 23px); }
+  .r-hero-lore { padding-top: 10px; padding-bottom: 10px; }
+  .r-lore-name { font-size: clamp(17px, 1.9vw, 23px); }
+  /* season-inner top padding is set dynamically via --season-pad-top */
   .r-hero-cue { display: none; }
 }
 
@@ -406,7 +407,7 @@ html, body { height: 100%; overflow: hidden; }
 
 /* ── SEASON ── */
 .r-season {
-  height: 100svh;
+  min-height: 100svh;
   flex-shrink: 0;
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -440,7 +441,7 @@ html, body { height: 100%; overflow: hidden; }
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
-  padding: 18px clamp(16px, 4vw, 56px) 40px;
+  padding: var(--season-pad-top, 76px) clamp(16px, 4vw, 56px) 40px;
   scrollbar-width: thin;
   scrollbar-color: rgba(192,57,43,0.2) transparent;
   position: relative;
@@ -463,7 +464,7 @@ html, body { height: 100%; overflow: hidden; }
 }
 .r-season-title {
   font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(28px, 4vw, 44px);
+  font-size: clamp(18px, 4vw, 44px);
   font-weight: 700;
   color: var(--r-parchment);
   margin: 0 0 12px;
@@ -755,7 +756,7 @@ html, body { height: 100%; overflow: hidden; }
 
 /* ── OATH / CONTACT ── */
 .r-oath {
-  height: 100svh;
+  min-height: 100svh;
   scroll-snap-align: start;
   scroll-snap-stop: always;
   padding: 92px 32px 80px;
@@ -807,10 +808,10 @@ html, body { height: 100%; overflow: hidden; }
 .r-oath > *:not(.r-oath-bg):not(.r-foot) { position: relative; z-index: 2; }
 .r-oath-title {
   font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(26px, 3.7vw, 42px);
+  font-size: clamp(22px, 3.7vw, 42px);
   color: var(--r-parchment);
   margin: 0 0 14px;
-  line-height: 1.12;
+  line-height: 1.18;
   font-weight: 700;
   text-shadow: 0 2px 18px rgba(0,0,0,0.95), 0 0 40px rgba(192,57,43,0.3);
   white-space: pre-line;
@@ -827,102 +828,46 @@ html, body { height: 100%; overflow: hidden; }
 .r-oath-links {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
+  gap: 14px;
   width: min(860px, 100%);
   margin: 0 auto;
 }
 .r-oath-link {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;
   text-decoration: none;
-  padding: 28px 30px;
-  border: none; border-radius: 0;
-  position: relative; overflow: hidden;
-  transition: transform 0.25s, filter 0.25s;
-
-  /* Mid-golden parchment base */
-  background-color: #c8922a;
-  background-image:
-    /* Paper grain */
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.11'/%3E%3C/svg%3E"),
-    /* Heavy corner burns — the most characteristic parchment feature */
-    radial-gradient(ellipse 62% 62% at   0%   0%, rgba(30,10,1,0.96) 0%, rgba(90,40,5,0.65) 30%, transparent 62%),
-    radial-gradient(ellipse 62% 62% at 100%   0%, rgba(30,10,1,0.93) 0%, rgba(90,40,5,0.60) 30%, transparent 62%),
-    radial-gradient(ellipse 62% 62% at   0% 100%, rgba(30,10,1,0.96) 0%, rgba(90,40,5,0.65) 30%, transparent 62%),
-    radial-gradient(ellipse 62% 62% at 100% 100%, rgba(30,10,1,0.96) 0%, rgba(90,40,5,0.65) 30%, transparent 62%),
-    /* Edge burns */
-    radial-gradient(ellipse 100% 32% at 50%   0%, rgba(80,35,4,0.62) 0%, rgba(110,58,8,0.28) 55%, transparent 100%),
-    radial-gradient(ellipse 100% 32% at 50% 100%, rgba(80,35,4,0.68) 0%, rgba(110,58,8,0.30) 55%, transparent 100%),
-    radial-gradient(ellipse  32% 100% at   0% 50%, rgba(80,35,4,0.58) 0%, rgba(110,58,8,0.25) 55%, transparent 100%),
-    radial-gradient(ellipse  32% 100% at 100% 50%, rgba(80,35,4,0.58) 0%, rgba(110,58,8,0.25) 55%, transparent 100%),
-    /* Bright centre highlight */
-    radial-gradient(ellipse 58% 58% at 50% 48%, rgba(255,248,210,0.58) 0%, transparent 100%),
-    /* Warm mid-tone base gradient */
-    linear-gradient(148deg, #b87c1a 0%, #d4a030 20%, #eaca60 42%, #f8ee9a 54%, #eaca60 66%, #d09828 82%, #b07818 100%);
-
-  /* Worn organic edge — gentle wave, not sharp tear */
-  clip-path: polygon(
-    0% 2%,   4% 0.5%, 8% 2.5%, 13% 0%,   18% 2%,   23% 0.5%, 28% 2%,   33% 0%,
-    38% 2%,  43% 0.5%,48% 2%,  53% 0%,   58% 2.5%, 63% 0.5%, 68% 2%,   73% 0%,
-    78% 2%,  83% 0.5%,88% 2.5%,93% 0%,   98% 2%,   100% 0.5%,
-    100% 4%, 98% 9%,  100% 14%,98.5% 19%,100% 25%, 98% 30%,  100% 35%,98.5% 41%,
-    100% 46%,98% 51%, 100% 57%,98.5% 62%,100% 67%, 98% 73%,  100% 78%,98.5% 84%,
-    100% 90%,98% 95%, 100% 99%,
-    97% 100%,92% 98%, 87% 100%,82% 97.5%,77% 100%,72% 98%,  67% 100%,62% 97.5%,
-    57% 100%,52% 98%, 47% 100%,42% 97.5%,37% 100%,32% 98%,  27% 100%,22% 97.5%,
-    17% 100%,12% 98%, 7% 100%, 2% 97.5%, 0% 99.5%,
-    0% 96%,  2% 91%,  0% 86%,  2% 81%,   0% 76%,   2% 71%,   0% 66%,   2% 61%,
-    0% 56%,  2% 51%,  0% 46%,  2% 41%,   0% 36%,   2% 31%,   0% 26%,   2% 21%,
-    0% 16%,  2% 11%,  0% 6%
-  );
-  filter: drop-shadow(0 6px 20px rgba(0,0,0,0.65)) drop-shadow(0 2px 6px rgba(0,0,0,0.40));
-}
-/* Extra mottled aging across the face */
-.r-oath-link::before {
-  content: '';
-  position: absolute; inset: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 40% 30% at 25% 70%, rgba(80,38,4,0.18) 0%, transparent 100%),
-    radial-gradient(ellipse 35% 25% at 72% 28%, rgba(255,245,195,0.22) 0%, transparent 100%),
-    radial-gradient(ellipse 30% 20% at 60% 75%, rgba(80,38,4,0.12) 0%, transparent 100%);
-}
-.r-oath-link > * { position: relative; z-index: 1; }
-
-/* Variant B — slightly different wave rhythm for odd cards */
-.r-oath-link:nth-child(odd) {
-  clip-path: polygon(
-    0% 1%,   3% 2.5%, 7% 0%,   12% 2%,   17% 0.5%,22% 2.5%, 27% 0%,   32% 2%,
-    37% 0.5%,42% 2.5%,47% 0%,  52% 2%,   57% 0.5%,62% 2.5%, 67% 0%,   72% 2%,
-    77% 0.5%,82% 2.5%,87% 0%,  92% 2%,   97% 0.5%,100% 2%,
-    100% 5%, 98.5% 10%,100% 16%,98% 21%,  100% 27%,98.5% 32%,100% 38%,98% 43%,
-    100% 49%,98.5% 54%,100% 60%,98% 65%,  100% 71%,98.5% 76%,100% 82%,98% 87%,
-    100% 93%,98.5% 98%,
-    100% 100%,95% 98%,90% 100%,85% 98%,   80% 100%,75% 97.5%,70% 100%,65% 98%,
-    60% 100%,55% 97.5%,50% 100%,45% 98%, 40% 100%,35% 97.5%,30% 100%,25% 98%,
-    20% 100%,15% 97.5%,10% 100%,5% 98%,  0% 100%,
-    0% 97%,  1.5% 92%,0% 87%,  2% 82%,   0% 77%,   1.5% 72%, 0% 67%,   2% 62%,
-    0% 57%,  1.5% 52%,0% 47%,  2% 42%,   0% 37%,   1.5% 32%, 0% 27%,   2% 22%,
-    0% 17%,  1.5% 12%,0% 7%,   2% 2%
-  );
+  padding: 26px 30px;
+  border-radius: 2px;
+  position: relative;
+  /* Very low density frost */
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(5px) saturate(110%);
+  -webkit-backdrop-filter: blur(5px) saturate(110%);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255,255,255,0.13);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.06);
+  transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
 }
 .r-oath-link:hover {
-  transform: translateY(-4px) scale(1.06) rotate(0.3deg);
-  filter: drop-shadow(0 12px 28px rgba(0,0,0,0.72)) drop-shadow(0 4px 8px rgba(0,0,0,0.45));
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(212,160,23,0.22);
+  border-top-color: rgba(212,160,23,0.35);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(212,160,23,0.10);
+  transform: translateY(-3px);
 }
 .r-oath-link-label {
   font-family: 'Cinzel', serif;
   font-size: clamp(10px, 0.95vw, 12px);
-  letter-spacing: 0.24em;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: #1e0c02;
+  color: var(--r-gold);
   font-weight: 700;
-  text-shadow: 0 1px 0 rgba(255,240,180,0.35);
 }
 .r-oath-link-value {
   font-family: 'EB Garamond', Georgia, serif;
   font-style: italic;
-  font-size: clamp(12px, 1.1vw, 14px);
-  color: rgba(30,12,2,0.55);
-  letter-spacing: 0.03em;
+  font-size: clamp(13px, 1.15vw, 15px);
+  color: var(--r-text-2);
+  letter-spacing: 0.02em;
 }
 
 @media (max-height: 820px) and (min-width: 901px) {
@@ -930,7 +875,7 @@ html, body { height: 100%; overflow: hidden; }
   .r-oath::after { top: 76px; }
   .r-oath-title { font-size: clamp(24px, 3.2vw, 36px); margin-bottom: 10px; }
   .r-oath-text { margin-bottom: 20px; line-height: 1.35; }
-  .r-oath-link { padding: 10px 16px; }
+  .r-oath-link { padding: 18px 20px; }
 }
 
 .r-foot {
@@ -958,12 +903,17 @@ html, body { height: 100%; overflow: hidden; }
   .r-nav-links, .r-nav-words { display: none; }
   .r-nav-name { font-size: 11px; letter-spacing: 0.2em; }
   .r-nav-cta { padding: 9px 12px; font-size: 10px; letter-spacing: 0.14em; }
-  .r-hero { padding: 92px 16px 34px; }
-  .r-hero-lore { padding: 16px 16px; }
-  .r-season-inner { padding: 16px 16px 32px; }
-  .r-cards,
+  .r-hero { padding: 88px 16px 28px; }
+  .r-hero-lore { padding: 12px 12px; }
+  .r-hero-title { font-size: clamp(26px, 7.5vw, 60px); }
+  .r-lore-name { font-size: clamp(15px, 4.2vw, 22px); letter-spacing: 0.18em; }
+  .r-lore-epithets { font-size: clamp(13px, 3.5vw, 16px); }
+  .r-season-inner { padding-right: 16px; padding-bottom: 32px; padding-left: 16px; }
+  .r-season-title { font-size: clamp(18px, 5.5vw, 40px); }
+  .r-season-lore { font-size: 15px; }
+  .r-cards { grid-template-columns: 1fr; gap: 12px; }
   .r-cards[data-count="4"],
-  .r-cards[data-count="5"] { grid-template-columns: 1fr; gap: 12px; }
+  .r-cards[data-count="5"] { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .r-cards[data-count="5"] .r-card,
   .r-cards[data-count="5"] .r-card:nth-child(4),
   .r-cards[data-count="5"] .r-card:nth-child(5) { grid-column: span 1; }
@@ -979,21 +929,103 @@ html, body { height: 100%; overflow: hidden; }
   }
   .r-modal-header { padding: 24px 48px 16px 18px; }
   .r-modal-body { grid-template-columns: 1fr; gap: 20px; padding: 18px 18px 36px; }
-  .r-hero-stats { flex-direction: column; gap: 14px; }
-  .r-hero-stat { padding: 8px 0; }
-  .r-hero-stat-sep { width: 40px; height: 1px; }
-  .r-oath { height: 100svh; padding: 78px 16px 70px; }
+  .r-hero-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    width: min(100%, 420px);
+    margin: 0 auto;
+    justify-items: center;
+  }
+  .r-hero-stat { padding: 6px 0; }
+  .r-hero-stat-sep { display: none; }
+  .r-oath { min-height: 100svh; padding: 78px 16px 70px; }
   .r-oath::after {
     top: 76px;
     max-width: calc(100% - 32px);
     white-space: normal;
     line-height: 1.35;
+    text-align: center;
   }
-  .r-oath-title { font-size: clamp(22px, 7vw, 32px); }
-  .r-oath-text { margin-bottom: 20px; }
+  .r-oath-title { font-size: clamp(18px, 6vw, 28px); }
+  .r-oath-text { font-size: clamp(14px, 3.8vw, 18px); margin-bottom: 20px; }
   .r-oath-links { grid-template-columns: 1fr; width: 100%; }
   .r-oath-link { padding: 14px 16px; }
+  .r-foot {
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 16px;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+  }
+  .r-foot-left, .r-foot-words { text-align: center; }
   .r-season-bg { background-size: cover; }
+}
+
+/* ── PHONE (iPhone 14/15 Pro, S24, S25 — ≤480px) ── */
+@media (max-width: 480px) {
+  .r-nav { padding: 8px 10px; gap: 8px; }
+  .r-nav-name { font-size: 10px; letter-spacing: 0.14em; }
+  .r-nav-cta { padding: 7px 10px; font-size: 9px; letter-spacing: 0.1em; }
+
+  .r-hero { padding: 76px 12px 20px; }
+  .r-hero-title { font-size: clamp(22px, 7.2vw, 40px); }
+  .r-hero-house { font-size: 8px; letter-spacing: 0.3em; }
+  .r-hero-subtitle { font-size: clamp(13px, 3.8vw, 16px); }
+  .r-hero-lore { padding: 10px 8px; margin-top: 6px; }
+  .r-lore-name { font-size: clamp(13px, 4vw, 18px); letter-spacing: 0.12em; }
+  .r-lore-epithets { font-size: 12px; }
+  .r-hero-stat-val { font-size: clamp(14px, 4vw, 20px); }
+  .r-hero-stat-lbl { font-size: 7px; letter-spacing: 0.32em; }
+  .r-hero-cue { font-size: 8px; letter-spacing: 0.3em; margin-top: 6px; }
+  .r-hero-stats {
+    width: min(100%, 320px);
+    margin: 0 auto;
+  }
+
+  .r-season-inner { padding-right: 12px; padding-bottom: 24px; padding-left: 12px; }
+  .r-season-title { font-size: clamp(16px, 5.5vw, 28px); }
+  .r-season-lore { font-size: 13px; padding-left: 12px; }
+  .r-season-number { font-size: 10px; }
+
+  .r-card { padding: 14px 12px 10px; border-radius: 12px; }
+  .r-card-title { font-size: clamp(11px, 3.2vw, 14px); }
+  .r-card-duration { font-size: 9px; }
+  .r-card-impact-val { font-size: 14px; }
+
+  .r-cards[data-count="4"],
+  .r-cards[data-count="5"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+  }
+
+  .r-hero-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: min(100%, 320px);
+    margin: 0 auto;
+    justify-items: center;
+  }
+  .r-hero-stat { padding: 8px 0; }
+  .r-hero-stat-sep { display: none; }
+
+  .r-modal-header { padding: 18px 44px 12px 14px; }
+  .r-modal-body { padding: 14px 14px 28px; gap: 14px; }
+  .r-scroll-text { font-size: 14px; }
+  .r-scroll-metric-val { font-size: 15px; }
+  .r-scroll-section-title { font-size: 10px; }
+
+  .r-oath { padding: 70px 12px 60px; }
+  .r-oath::after { top: 68px; font-size: 10px; letter-spacing: 0.12em; }
+  .r-oath-title { font-size: clamp(16px, 5.5vw, 22px); line-height: 1.25; }
+  .r-oath-text { font-size: 13px; }
+  .r-oath-link { padding: 12px 14px; }
+  .r-oath-link-label { font-size: 9px; letter-spacing: 0.22em; }
+  .r-oath-link-value { font-size: 12px; }
+
+  .r-foot { font-size: 8px; letter-spacing: 0.1em; padding: 10px 12px; }
 }
 
 @media (min-width: 901px) and (max-width: 1200px) {
@@ -1167,6 +1199,18 @@ function RefinedPortfolio({ data, density = "regular" }) {
     const onKey = (e) => { if (e.key === 'Escape') setSelectedId(null); };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
+  }, []);
+
+  useEffect(() => {
+    const syncPad = () => {
+      const nav = document.querySelector('.r-nav');
+      if (!nav) return;
+      const bottom = nav.getBoundingClientRect().bottom;
+      document.documentElement.style.setProperty('--season-pad-top', `${Math.round(bottom + 4)}px`);
+    };
+    syncPad();
+    window.addEventListener('resize', syncPad);
+    return () => window.removeEventListener('resize', syncPad);
   }, []);
 
   const fontSize = density === "compact" ? 17 : density === "comfy" ? 21 : 19;

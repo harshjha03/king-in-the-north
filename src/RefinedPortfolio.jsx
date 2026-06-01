@@ -1237,7 +1237,7 @@ function RefinedPortfolio({ data, density = "regular" }) {
           <button className={`r-nav-link ${activeSection === 'season1' ? 'active' : ''}`} onClick={() => goTo('season1')}>Season I</button>
           <button className={`r-nav-link ${activeSection === 'season2' ? 'active' : ''}`} onClick={() => goTo('season2')}>Season II</button>
           <button className={`r-nav-link ${activeSection === 'season3' ? 'active' : ''}`} onClick={() => goTo('season3')}>Season III</button>
-          <button className={`r-nav-link ${activeSection === 'season4' ? 'active' : ''}`} onClick={() => goTo('season4')}>Season IV · Pet</button>
+          <button className={`r-nav-link ${activeSection === 'season4' ? 'active' : ''}`} onClick={() => goTo('season4')}>Season IV</button>
           <button className={`r-nav-link ${activeSection === 'oath' ? 'active' : ''}`} onClick={() => goTo('oath')}>Raven</button>
         </div>
         <a className="r-nav-cta" href={data.identity.resumeUrl} download

@@ -1088,8 +1088,12 @@ function Tag({ tag }) {
 function Card({ track, data, onOpen }) {
   const cs = data.caseStudies[track.id];
   const metric = cs?.metrics?.[0];
+  const handleOpen = () => {
+    onOpen(track.id);
+    window.umami?.track('case_study_open', { id: track.id, title: track.title });
+  };
   return (
-    <div className="r-card" onClick={() => onOpen(track.id)}>
+    <div className="r-card" onClick={handleOpen}>
       <div className="r-card-top">
         <span className="r-card-duration">{track.duration}</span>
         <span className="r-card-type">{track.type}</span>
@@ -1133,7 +1137,8 @@ function Modal({ id, data, onClose }) {
               ))}
             </div>
             {cs.link && (
-              <a className="r-scroll-link" href={cs.link} target="_blank" rel="noreferrer">
+              <a className="r-scroll-link" href={cs.link} target="_blank" rel="noreferrer"
+                 data-umami-event="realm_link_click" data-umami-event-id={id}>
                 Visit the Realm →
               </a>
             )}
@@ -1178,6 +1183,7 @@ function RefinedPortfolio({ data, density = "regular" }) {
   const goTo = (key) => {
     setActiveSection(key);
     refs[key].current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.umami?.track('nav_click', { section: key });
   };
 
   useEffect(() => {
@@ -1234,7 +1240,8 @@ function RefinedPortfolio({ data, density = "regular" }) {
           <button className={`r-nav-link ${activeSection === 'season4' ? 'active' : ''}`} onClick={() => goTo('season4')}>IV · Pet</button>
           <button className={`r-nav-link ${activeSection === 'oath' ? 'active' : ''}`} onClick={() => goTo('oath')}>Raven</button>
         </div>
-        <a className="r-nav-cta" href={data.identity.resumeUrl} download>Resume ↓</a>
+        <a className="r-nav-cta" href={data.identity.resumeUrl} download
+           data-umami-event="resume_download">Resume ↓</a>
       </nav>
 
       {/* ── HERO ── */}
@@ -1309,7 +1316,8 @@ function RefinedPortfolio({ data, density = "regular" }) {
             <a key={i} href={l.href}
                className="r-oath-link"
                target={l.href.startsWith('http') ? '_blank' : undefined}
-               rel={l.href.startsWith('http') ? 'noreferrer' : undefined}>
+               rel={l.href.startsWith('http') ? 'noreferrer' : undefined}
+               data-umami-event="contact_click" data-umami-event-platform={l.label}>
               <span className="r-oath-link-label">{l.label}</span>
               <span className="r-oath-link-value">{l.value}</span>
             </a>

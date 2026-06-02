@@ -754,6 +754,23 @@ html, body { height: 100%; overflow: hidden; }
 }
 .r-scroll-link:hover { background: rgba(192,57,43,0.15); color: #100804; }
 
+/* ── PORTRAIT ── */
+.r-portrait-wrap {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 10;
+}
+.r-portrait {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
 /* ── OATH / CONTACT ── */
 .r-oath {
   min-height: 100svh;
@@ -831,6 +848,24 @@ html, body { height: 100%; overflow: hidden; }
   gap: 14px;
   width: min(860px, 100%);
   margin: 0 auto;
+  position: relative;
+}
+/* Concave cutouts — mask circle is centered at the gap intersection, radius = portrait radius + buffer */
+.r-oath-links .r-oath-link:nth-child(1) {
+  mask-image: radial-gradient(circle 65px at calc(100% + 7px) calc(100% + 7px), transparent 65px, black 65.5px);
+  -webkit-mask-image: radial-gradient(circle 65px at calc(100% + 7px) calc(100% + 7px), transparent 65px, black 65.5px);
+}
+.r-oath-links .r-oath-link:nth-child(2) {
+  mask-image: radial-gradient(circle 65px at -7px calc(100% + 7px), transparent 65px, black 65.5px);
+  -webkit-mask-image: radial-gradient(circle 65px at -7px calc(100% + 7px), transparent 65px, black 65.5px);
+}
+.r-oath-links .r-oath-link:nth-child(3) {
+  mask-image: radial-gradient(circle 65px at calc(100% + 7px) -7px, transparent 65px, black 65.5px);
+  -webkit-mask-image: radial-gradient(circle 65px at calc(100% + 7px) -7px, transparent 65px, black 65.5px);
+}
+.r-oath-links .r-oath-link:nth-child(4) {
+  mask-image: radial-gradient(circle 65px at -7px -7px, transparent 65px, black 65.5px);
+  -webkit-mask-image: radial-gradient(circle 65px at -7px -7px, transparent 65px, black 65.5px);
 }
 .r-oath-link {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;
@@ -845,13 +880,15 @@ html, body { height: 100%; overflow: hidden; }
   border: 1px solid rgba(255,255,255,0.08);
   border-top: 1px solid rgba(255,255,255,0.13);
   box-shadow: 0 4px 24px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.06);
-  transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.55)) drop-shadow(0 2px 5px rgba(0,0,0,0.35));
+  transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s, filter 0.25s;
 }
 .r-oath-link:hover {
   background: rgba(255,255,255,0.07);
   border-color: rgba(212,160,23,0.22);
   border-top-color: rgba(212,160,23,0.35);
   box-shadow: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(212,160,23,0.10);
+  filter: drop-shadow(0 10px 28px rgba(0,0,0,0.7)) drop-shadow(0 4px 8px rgba(0,0,0,0.45));
   transform: translateY(-3px);
 }
 .r-oath-link-label {
@@ -950,6 +987,11 @@ html, body { height: 100%; overflow: hidden; }
   .r-oath-title { font-size: clamp(18px, 6vw, 28px); }
   .r-oath-text { font-size: clamp(14px, 3.8vw, 18px); margin-bottom: 20px; }
   .r-oath-links { grid-template-columns: 1fr; width: 100%; }
+  .r-oath-links .r-oath-link:nth-child(1),
+  .r-oath-links .r-oath-link:nth-child(2),
+  .r-oath-links .r-oath-link:nth-child(3),
+  .r-oath-links .r-oath-link:nth-child(4) { border-radius: 2px; }
+  .r-portrait-wrap { display: none; }
   .r-oath-link { padding: 14px 16px; }
   .r-foot {
     flex-direction: column;
@@ -1157,6 +1199,7 @@ function Modal({ id, data, onClose }) {
   );
 }
 
+
 function HeroSigil() {
   return (
     <img
@@ -1206,6 +1249,7 @@ function RefinedPortfolio({ data, density = "regular" }) {
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, []);
+
 
   useEffect(() => {
     const syncPad = () => {
@@ -1322,6 +1366,9 @@ function RefinedPortfolio({ data, density = "regular" }) {
               <span className="r-oath-link-value">{l.value}</span>
             </a>
           ))}
+          <div className="r-portrait-wrap">
+            <img className="r-portrait" src={window.__resources.portrait} alt="Harsh Jha" />
+          </div>
         </div>
         <footer className="r-foot">
           <div className="r-foot-left">© 2026 {data.identity.name}, of House Growth · First of His Name · Builder of Products</div>

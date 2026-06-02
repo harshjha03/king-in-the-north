@@ -9,7 +9,9 @@
       "Bash(git config *)",
       "Bash(git commit -m ' *)",
       "Bash(git remote *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(python -c \"import google_play_scraper\")",
+      "Bash(python \"C:\\\\Users\\\\Shazia_Shoeb\\\\Downloads\\\\playstore_scraper.py\" --app com.kazam.ev --start 2026-04-01 --end 2026-05-31)"
     ]
   }
 }

@@ -21,7 +21,7 @@ const server = http.createServer(async (req, res) => {
       : decodeURIComponent(requestUrl.pathname).replace(/^\/+/, '');
     const target = path.resolve(root, relativePath);
 
-    if (!target.startsWith(root)) {
+    if (!target.startsWith(root + path.sep) && target !== root) {
       res.writeHead(403);
       res.end('Forbidden');
       return;
@@ -30,6 +30,10 @@ const server = http.createServer(async (req, res) => {
     const data = await fs.readFile(target);
     res.writeHead(200, {
       'Content-Type': mimeTypes[path.extname(target).toLowerCase()] || 'application/octet-stream',
+      'X-Frame-Options': 'DENY',
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://cloud.umami.is https://www.googletagmanager.com https://www.google-analytics.com; object-src 'none'; frame-ancestors 'none';",
     });
     res.end(data);
   } catch {

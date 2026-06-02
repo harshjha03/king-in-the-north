@@ -1113,11 +1113,38 @@ function Card({ track, data, onOpen }) {
 }
 
 function Modal({ id, data, onClose }) {
-  const cs = data.caseStudies[id];
+  const cs = id ? data.caseStudies[id] : null;
+  const reached = useRef(new Set());
+
+  useEffect(() => { reached.current = new Set(); }, [id]);
+
+  useEffect(() => {
+    if (!id) return;
+    const opened = Date.now();
+    return () => {
+      const seconds = Math.round((Date.now() - opened) / 1000);
+      if (seconds >= 2) window.umami?.track('case_study_time', { id, seconds });
+    };
+  }, [id]);
+
   if (!id || !cs) return null;
+
+  const handleScroll = (e) => {
+    const el = e.currentTarget;
+    const total = el.scrollHeight - el.clientHeight;
+    if (total <= 0) return;
+    const pct = Math.round((el.scrollTop / total) * 100);
+    for (const threshold of [50, 100]) {
+      if (pct >= threshold && !reached.current.has(threshold)) {
+        reached.current.add(threshold);
+        window.umami?.track('case_study_scroll', { id, depth_pct: threshold });
+      }
+    }
+  };
+
   return (
     <div className="r-modal-overlay" onClick={onClose}>
-      <div className="r-modal" onClick={e => e.stopPropagation()}>
+      <div className="r-modal" onClick={e => e.stopPropagation()} onScroll={handleScroll}>
         <button className="r-modal-close" onClick={onClose}>✕</button>
         <div className="r-modal-header">
           <div className="r-modal-season">{cs.season}</div>
@@ -1171,6 +1198,7 @@ function HeroSigil() {
 function RefinedPortfolio({ data, density = "regular" }) {
   const [selectedId, setSelectedId] = useState(null);
   const [activeSection, setActiveSection] = useState("sigil");
+  const visitedSections = useRef(new Set(['sigil']));
   const refs = {
     sigil: useRef(null),
     season1: useRef(null),
@@ -1188,6 +1216,7 @@ function RefinedPortfolio({ data, density = "regular" }) {
 
   useEffect(() => {
     const keys = ['sigil', 'season1', 'season2', 'season3', 'season4', 'oath'];
+    const depthPct = { sigil: 0, season1: 20, season2: 40, season3: 60, season4: 80, oath: 100 };
     const container = document.querySelector('.refined-root');
     const onScroll = () => {
       let current = keys[0];
@@ -1196,6 +1225,10 @@ function RefinedPortfolio({ data, density = "regular" }) {
         if (refs[k].current.getBoundingClientRect().top <= 80) current = k;
       }
       setActiveSection(current);
+      if (!visitedSections.current.has(current)) {
+        visitedSections.current.add(current);
+        window.umami?.track('scroll_depth', { section: current, depth_pct: depthPct[current] });
+      }
     };
     container?.addEventListener('scroll', onScroll, { passive: true });
     return () => container?.removeEventListener('scroll', onScroll);
@@ -1217,6 +1250,32 @@ function RefinedPortfolio({ data, density = "regular" }) {
     syncPad();
     window.addEventListener('resize', syncPad);
     return () => window.removeEventListener('resize', syncPad);
+  }, []);
+
+  useEffect(() => {
+    const ref = document.referrer;
+    let source = 'direct';
+    let domain = '';
+    if (ref) {
+      try {
+        domain = new URL(ref).hostname.replace(/^www\./, '');
+        if (domain.includes('linkedin')) source = 'linkedin';
+        else if (domain.includes('github')) source = 'github';
+        else if (['google', 'bing', 'duckduckgo', 'yahoo'].some(s => domain.includes(s))) source = 'search';
+        else source = 'referral';
+      } catch {}
+    }
+    const w = window.innerWidth;
+    const device = w < 768 ? 'mobile' : w < 1024 ? 'tablet' : 'desktop';
+    window.umami?.track('page_load', { referrer_source: source, referrer_domain: domain || undefined, device });
+  }, []);
+
+  useEffect(() => {
+    const milestones = [30, 60, 120, 300];
+    const timers = milestones.map(s =>
+      setTimeout(() => window.umami?.track('time_on_page', { seconds: s }), s * 1000)
+    );
+    return () => timers.forEach(clearTimeout);
   }, []);
 
   const fontSize = density === "compact" ? 17 : density === "comfy" ? 21 : 19;
@@ -1241,7 +1300,13 @@ function RefinedPortfolio({ data, density = "regular" }) {
           <button className={`r-nav-link ${activeSection === 'oath' ? 'active' : ''}`} onClick={() => goTo('oath')}>Raven</button>
         </div>
         <a className="r-nav-cta" href={data.identity.resumeUrl} download
-           data-umami-event="resume_download">Resume ↓</a>
+           onClick={() => {
+             const w = window.innerWidth;
+             window.umami?.track('resume_download', {
+               section: activeSection,
+               device: w < 768 ? 'mobile' : w < 1024 ? 'tablet' : 'desktop',
+             });
+           }}>Resume ↓</a>
       </nav>
 
       {/* ── HERO ── */}

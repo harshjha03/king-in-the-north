@@ -33,12 +33,12 @@ window.PORTFOLIO = {
       lore: "Before you can rule Westeros, you must first survive Essos. Two kingdoms. Two schools of fire.",
       tracks: [
         { id: "fuelbuddy", roman: "I", title: "Essos — FuelBuddy UAE",
-          type: "Origin Story · B2B", tags: ["Fuel Delivery", "Logistics", "UAE"],
-          duration: "2023–24", index: "Season I · Essos" },
+          type: "Origin Story · B2B", tags: ["2024–2025", "Gurugram", "Logistics"],
+          duration: "2024–25", index: "Season I · Essos" },
         { id: "kazamexp", roman: "II", title: "Westeros — Kazam",
           type: "Growth · B2C · B2B · EV Charging",
-          tags: ["2024–Present", "Bengaluru", "EV Charging"],
-          duration: "2024–Present", index: "Season I · Westeros" },
+          tags: ["2025–Present", "Bengaluru", "EV Charging"],
+          duration: "2025–Present", index: "Season I · Westeros" },
       ],
     },
     {
@@ -108,7 +108,7 @@ window.PORTFOLIO = {
       lore: "Every conqueror was first a stranger in a strange land. This is where it began.",
       metrics: [
         { val: "B2B",     lbl: "Product Domain" },
-        { val: "2023–24", lbl: "Era of Service" },
+        { val: "2024–25", lbl: "Era of Service" },
         { val: "UAE",     lbl: "Kingdom Served" },
       ],
       sections: [
@@ -123,7 +123,7 @@ window.PORTFOLIO = {
       lore: "A king does not ask for the throne. He builds the road that leads to it.",
       metrics: [
         { val: "B2C+B2B",   lbl: "Product Domain" },
-        { val: "2024–25",   lbl: "Era of Service" },
+        { val: "2025–Present", lbl: "Era of Service" },
         { val: "Bengaluru", lbl: "Kingdom Served" },
       ],
       sections: [

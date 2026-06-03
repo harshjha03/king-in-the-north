@@ -532,7 +532,6 @@ html, body { height: 100%; overflow: hidden; }
   pointer-events: none;
 }
 .r-card:hover {
-  transform: scale(1.04) translateY(-3px);
   background: rgba(255,255,255,0.055);
   border-color: rgba(192,57,43,0.35);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 12px 36px rgba(0,0,0,0.55), 0 0 24px rgba(192,57,43,0.1);
@@ -852,7 +851,6 @@ html, body { height: 100%; overflow: hidden; }
   border-color: rgba(212,160,23,0.22);
   border-top-color: rgba(212,160,23,0.35);
   box-shadow: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(212,160,23,0.10);
-  transform: translateY(-3px);
 }
 .r-oath-link-label {
   font-family: 'Cinzel', serif;
@@ -1031,6 +1029,65 @@ html, body { height: 100%; overflow: hidden; }
 @media (min-width: 901px) and (max-width: 1200px) {
   .r-cards { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 }
+
+/* ── SECTION ENTRY ANIMATIONS ── */
+@keyframes r-entry-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes r-entry-left {
+  from { opacity: 0; transform: translateX(-26px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.r-season .r-season-number,
+.r-season .r-season-title,
+.r-season .r-season-lore { opacity: 0; }
+
+.r-season--entered .r-season-number {
+  animation: r-entry-left 0.5s cubic-bezier(0.22,1,0.36,1) both;
+}
+.r-season--entered .r-season-title {
+  animation: r-entry-up 0.55s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+}
+.r-season--entered .r-season-lore {
+  animation: r-entry-up 0.55s cubic-bezier(0.22,1,0.36,1) 0.22s both;
+}
+
+/* Cards use transitions (not animations) so JS inline transform can override them */
+.r-season .r-card {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.5s cubic-bezier(0.22,1,0.36,1), transform 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+.r-season--entered .r-card { opacity: 1; transform: translateY(0); }
+.r-season--entered .r-card:nth-child(1) { transition-delay: 0.32s; }
+.r-season--entered .r-card:nth-child(2) { transition-delay: 0.42s; }
+.r-season--entered .r-card:nth-child(3) { transition-delay: 0.52s; }
+.r-season--entered .r-card:nth-child(4) { transition-delay: 0.57s; }
+.r-season--entered .r-card:nth-child(5) { transition-delay: 0.62s; }
+
+.r-oath .r-oath-title,
+.r-oath .r-oath-text { opacity: 0; }
+
+.r-oath--entered .r-oath-title {
+  animation: r-entry-up 0.6s cubic-bezier(0.22,1,0.36,1) both;
+}
+.r-oath--entered .r-oath-text {
+  animation: r-entry-up 0.55s cubic-bezier(0.22,1,0.36,1) 0.15s both;
+}
+
+/* Oath links also use transitions for the same reason */
+.r-oath .r-oath-link {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.5s cubic-bezier(0.22,1,0.36,1), transform 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+.r-oath--entered .r-oath-link { opacity: 1; transform: translateY(0); }
+.r-oath--entered .r-oath-link:nth-child(1) { transition-delay: 0.30s; }
+.r-oath--entered .r-oath-link:nth-child(2) { transition-delay: 0.40s; }
+.r-oath--entered .r-oath-link:nth-child(3) { transition-delay: 0.50s; }
+.r-oath--entered .r-oath-link:nth-child(4) { transition-delay: 0.60s; }
 `;
 
 /* ── Heraldic sigil — original abstract flame medallion ───────────
@@ -1088,14 +1145,32 @@ function Tag({ tag }) {
 function Card({ track, data, onOpen }) {
   const cs = data.caseStudies[track.id];
   const metric = cs?.metrics?.[0];
+  const cardRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transition = 'box-shadow 0.25s, background 0.2s, border-color 0.2s';
+    card.style.transform = `perspective(700px) rotateX(${y * -12}deg) rotateY(${x * 12}deg) scale(1.04) translateY(-3px)`;
+  };
+
+  const handleMouseLeave = () => {
+    const card = cardRef.current;
+    if (!card) return;
+    card.style.transition = 'transform 0.45s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s, background 0.2s, border-color 0.2s';
+    card.style.transform = '';
+  };
+
   const handleOpen = () => {
     onOpen(track.id);
     window.umami?.track('case_study_open', { id: track.id, title: track.title });
   };
   return (
-    <div className="r-card" onClick={handleOpen}>
+    <div ref={cardRef} className="r-card" onClick={handleOpen} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
       <div className="r-card-top">
-        <span className="r-card-duration">{track.duration}</span>
         <span className="r-card-type">{track.type}</span>
       </div>
       <h3 className="r-card-title">{track.title}</h3>
@@ -1241,6 +1316,51 @@ function RefinedPortfolio({ data, density = "regular" }) {
   }, []);
 
   useEffect(() => {
+    const targets = [
+      { ref: refs.season1, cls: 'r-season--entered' },
+      { ref: refs.season2, cls: 'r-season--entered' },
+      { ref: refs.season3, cls: 'r-season--entered' },
+      { ref: refs.season4, cls: 'r-season--entered' },
+      { ref: refs.oath,    cls: 'r-oath--entered' },
+    ];
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const el = entry.target;
+        const cls = el.dataset.entryCls;
+        if (entry.isIntersecting) {
+          el.classList.remove(cls);
+          void el.offsetHeight;
+          el.classList.add(cls);
+        } else {
+          el.classList.remove(cls);
+        }
+      });
+    }, { threshold: 0.3 });
+    targets.forEach(({ ref, cls }) => {
+      if (ref.current) {
+        ref.current.dataset.entryCls = cls;
+        observer.observe(ref.current);
+      }
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  const handleOathMove = (e) => {
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    el.style.transition = 'box-shadow 0.25s, background 0.25s, border-color 0.25s';
+    el.style.transform = `perspective(700px) rotateX(${y * -10}deg) rotateY(${x * 10}deg) translateY(-3px)`;
+  };
+
+  const handleOathLeave = (e) => {
+    const el = e.currentTarget;
+    el.style.transition = 'transform 0.45s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s, background 0.25s, border-color 0.25s';
+    el.style.transform = '';
+  };
+
+  useEffect(() => {
     const syncPad = () => {
       const nav = document.querySelector('.r-nav');
       if (!nav) return;
@@ -1382,7 +1502,9 @@ function RefinedPortfolio({ data, density = "regular" }) {
                className="r-oath-link"
                target={l.href.startsWith('http') ? '_blank' : undefined}
                rel={l.href.startsWith('http') ? 'noreferrer' : undefined}
-               data-umami-event="contact_click" data-umami-event-platform={l.label}>
+               data-umami-event="contact_click" data-umami-event-platform={l.label}
+               onMouseMove={handleOathMove}
+               onMouseLeave={handleOathLeave}>
               <span className="r-oath-link-label">{l.label}</span>
               <span className="r-oath-link-value">{l.value}</span>
             </a>

@@ -1274,6 +1274,21 @@ function RefinedPortfolio({ data, density = "regular" }) {
   const [selectedId, setSelectedId] = useState(null);
   const [activeSection, setActiveSection] = useState("sigil");
   const visitedSections = useRef(new Set(['sigil']));
+  const modalPushed = useRef(false);
+
+  const openModal = (id) => {
+    setSelectedId(id);
+    history.pushState({ modal: id }, '');
+    modalPushed.current = true;
+  };
+
+  const closeModal = () => {
+    setSelectedId(null);
+    if (modalPushed.current) {
+      modalPushed.current = false;
+      history.back();
+    }
+  };
   const refs = {
     sigil: useRef(null),
     season1: useRef(null),
@@ -1310,9 +1325,20 @@ function RefinedPortfolio({ data, density = "regular" }) {
   }, []);
 
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') setSelectedId(null); };
+    const onKey = (e) => { if (e.key === 'Escape') closeModal(); };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
+  }, []);
+
+  useEffect(() => {
+    const onPop = () => {
+      if (modalPushed.current) {
+        modalPushed.current = false;
+        setSelectedId(null);
+      }
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
   }, []);
 
   useEffect(() => {
@@ -1483,7 +1509,7 @@ function RefinedPortfolio({ data, density = "regular" }) {
                   key={track.id}
                   track={track}
                   data={data}
-                  onOpen={setSelectedId}
+                  onOpen={openModal}
                 />
               ))}
             </div>
@@ -1500,8 +1526,8 @@ function RefinedPortfolio({ data, density = "regular" }) {
           {data.links.map((l, i) => (
             <a key={i} href={l.href}
                className="r-oath-link"
-               target={l.href.startsWith('http') ? '_blank' : undefined}
-               rel={l.href.startsWith('http') ? 'noreferrer' : undefined}
+               target={l.href.startsWith('mailto:') ? undefined : '_blank'}
+               rel={l.href.startsWith('mailto:') ? undefined : 'noreferrer'}
                data-umami-event="contact_click" data-umami-event-platform={l.label}
                onMouseMove={handleOathMove}
                onMouseLeave={handleOathLeave}>
@@ -1516,7 +1542,7 @@ function RefinedPortfolio({ data, density = "regular" }) {
         </footer>
       </section>
 
-      {selectedId && <Modal id={selectedId} data={data} onClose={() => setSelectedId(null)} />}
+      {selectedId && <Modal id={selectedId} data={data} onClose={closeModal} />}
     </div>
   );
 }

@@ -9,7 +9,18 @@
       "Bash(git config *)",
       "Bash(git commit -m ' *)",
       "Bash(git remote *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git -C \"c:/Users/Shazia_Shoeb/king-in-the-north\" status)",
+      "Bash(git -C \"c:/Users/Shazia_Shoeb/king-in-the-north\" diff)",
+      "Bash(git -C \"c:/Users/Shazia_Shoeb/king-in-the-north\" log --oneline -5)",
+      "Bash(git -C \"c:/Users/Shazia_Shoeb/king-in-the-north\" add serve.mjs src/RefinedPortfolio.jsx)",
+      "Bash(git -C c:/Users/Shazia_Shoeb/king-in-the-north commit -m ' *)",
+      "Bash(node serve.mjs)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:4173/)",
+      "Bash(git -C \"c:/Users/Shazia_Shoeb/king-in-the-north\" diff --stat)",
+      "Bash(git -C \"c:/Users/Shazia_Shoeb/king-in-the-north\" add src/RefinedPortfolio.jsx src/data.js)",
+      "Bash(git -C \"c:/Users/Shazia_Shoeb/king-in-the-north\" push)",
+      "Bash(git -C \"c:/Users/Shazia_Shoeb/king-in-the-north\" add src/RefinedPortfolio.jsx)"
     ]
   }
 }

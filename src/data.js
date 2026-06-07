@@ -12,7 +12,7 @@ window.PORTFOLIO = {
     words: "Fire & Blood · Ship or Die",
     email: "harshtimes112@gmail.com",
     linkedin: "https://linkedin.com/in/harsh-jha-0311",
-    mufasa: "https://mufasa-ka-jungle.vercel.app",
+    mufasa: "https://mufasa.jhaharsh.in",
     resumeUrl: "./assets/resume.pdf",
   },
 
@@ -95,7 +95,7 @@ window.PORTFOLIO = {
           tags: [{ label: "🦁 LIVE", fire: true }, { label: "Gemini AI", fire: true }, "Built for India", "PWA"],
           duration: "May 2026", index: "Season IV · Track 1",
           easter: "🦁 Remember who you are, Simba…",
-          link: "https://mufasa-ka-jungle.vercel.app" },
+          link: "https://mufasa.jhaharsh.in" },
       ],
     },
   ],
@@ -261,10 +261,10 @@ window.PORTFOLIO = {
         { val: "55+",   lbl: "Indian Foods in DB" },
         { val: "<90s",  lbl: "Onboarding to Plan" },
       ],
-      link: "https://mufasa-ka-jungle.vercel.app",
+      link: "https://mufasa.jhaharsh.in",
       sections: [
         { title: "The Wildfire Problem", text: "Generic fitness apps (MyFitnessPal, Nike Training) are not built for India. They ignore Indian dietary patterns, require a gym, lack budget constraints, and give no personalisation for desi food or body types. The 18–35 year old Indian professional cannot afford a personal trainer but wants structure." },
-        { title: "The Pride Lands", text: "Built a live PWA — mufasa-ka-jungle.vercel.app — that generates fully personalised workout + meal plans using Gemini 2.0 Flash. Adapted to body type (ectomorph/mesomorph/endomorph via BMI + activity), Indian diet preferences (veg/eggetarian/non-veg/vegan), monthly budget, and activity level. 6-step onboarding completes in under 90 seconds." },
+        { title: "The Pride Lands", text: "Built a live PWA — mufasa.jhaharsh.in — that generates fully personalised workout + meal plans using Gemini 2.0 Flash. Adapted to body type (ectomorph/mesomorph/endomorph via BMI + activity), Indian diet preferences (veg/eggetarian/non-veg/vegan), monthly budget, and activity level. 6-step onboarding completes in under 90 seconds." },
         { title: "The Dragon's Logic", text: "All macro calculations are fully deterministic (Mifflin-St Jeor BMR → TDEE → body type adjustments). Gemini output is validated against this logic before saving — preventing unsafe AI outputs. Plans stored in Supabase, only regenerated on profile edit, not per session — managing API costs. Local Indian food DB (55 foods, 8 categories) as primary source; Groq Llama 4 Scout as web search fallback only. Weight-to-macro auto-sync when weight delta ≥ 1kg — no AI call needed." },
         { title: "The Stack", text: "React 18 + TypeScript + Vite + Tailwind CSS. Supabase (PostgreSQL + Google OAuth + Row-Level Security on all tables). Vercel with auto-deploy on push to main. Gemini 2.0 Flash for plan generation, Groq Llama 4 Scout for food search. Screens: Today · Workout · Nutrition · Progress · Expenses · Profile." },
         { title: "The North Star", text: "Weekly active users who log at least 1 workout AND at least 1 meal in the same week — capturing full-loop engagement with the core value proposition." },
@@ -281,7 +281,7 @@ window.PORTFOLIO = {
   links: [
     { label: "Send a Raven",       value: "harshtimes112@gmail.com", href: "mailto:harshtimes112@gmail.com" },
     { label: "Cross Blades",       value: "/in/harsh-jha-0311",      href: "https://www.linkedin.com/in/harsh-jha-0311/" },
-    { label: "Walk the Pride Lands", value: "mufasa-ka-jungle",      href: "https://mufasa-ka-jungle.vercel.app" },
+    { label: "Walk the Pride Lands", value: "mufasa-ka-jungle",      href: "https://mufasa.jhaharsh.in" },
     { label: "Unfurl the Scroll",  value: "Résumé · CV",             href: "./assets/resume.pdf" },
   ],
 };

@@ -96,6 +96,12 @@ window.PORTFOLIO = {
           duration: "May 2026", index: "Season IV · Track 1",
           easter: "🦁 Remember who you are, Simba…",
           link: "https://mufasa.jhaharsh.in" },
+        { id: "notchisland", roman: "XII", title: "The Night's Watch — NotchIsland",
+          type: "Pet Project · macOS Native · Open Source",
+          tags: [{ label: "🏝 OPEN SOURCE", fire: true }, { label: "Swift 6", fire: true }, "ScreenCaptureKit", "1.7 MB app"],
+          duration: "August 2026", index: "Season IV · Track 2",
+          easter: "🏝 And now his watch begins…",
+          link: "https://github.com/harshjha03/NotchIsland" },
       ],
     },
   ],
@@ -270,6 +276,24 @@ window.PORTFOLIO = {
         { title: "The North Star", text: "Weekly active users who log at least 1 workout AND at least 1 meal in the same week — capturing full-loop engagement with the core value proposition." },
       ],
     },
+    notchisland: {
+      season: "Season IV · Track 2 — Beyond the Wall · Pet Project",
+      title: "The Night's Watch — NotchIsland",
+      lore: "Night gathers, and now my watch begins. He took the black — the dead strip at the top of every MacBook — and gave it a purpose.",
+      metrics: [
+        { val: "0.6%",  lbl: "Idle CPU" },
+        { val: "1.7MB", lbl: "On Disk" },
+        { val: "100%",  lbl: "Native Swift" },
+      ],
+      link: "https://github.com/harshjha03/NotchIsland",
+      sections: [
+        { title: "The Long Night", text: "The MacBook notch is dead pixels — a hardware cutout everyone ignores. Apps like NotchNook proved people want a Dynamic Island on the Mac, then put it behind a subscription. Meanwhile Apple locked away the system now-playing API (macOS 15.4+), making 'show what's playing from any app' officially impossible for third parties." },
+        { title: "The Watch", text: "A native menu-bar app that turns the notch into a living island: hover to expand. System-wide now-playing (Spotify, Music, even YouTube in a browser) with artwork and swipe-to-skip. Picture-in-picture — mirror a video call (FaceTime/WhatsApp/Zoom) or any browser video into the notch, pin it, and it survives desktop switches. Drop files on the notch to AirDrop them. Clipboard history, audio device switching with AirPods battery, live call detection with a timer pill, weather, volume HUD." },
+        { title: "The Wall's Magic", text: "The system now-playing lock is bypassed by running the query inside an Apple-signed process (perl) that passes the entitlement gate — the same loophole commercial notch apps use, with automatic AppleScript fallback if Apple ever closes it. PiP uses ScreenCaptureKit with desktop-independent window filters so video keeps playing across Spaces (browser PiP windows are auto-grabbed by title). Call detection reads camera/mic-in-use flags — zero permissions. Every permission is lazy: requested only when its feature is first used, never at launch." },
+        { title: "The Stack", text: "Swift 6 (strict concurrency) + SwiftUI/AppKit, built as a pure SwiftPM executable — no Xcode project. NSPanel above the menu bar with per-state click-through. AVSampleBufferDisplayLayer for the mirror (a plain CALayer shows one stale frame — SCK recycles IOSurfaces). Self-installing DMG (double-click → copies to Applications → ejects itself), GitHub Releases with an in-app update flag, ~1.7MB installed, 0.6% idle CPU." },
+        { title: "The Open Gates", text: "Free and MIT-licensed, unlike the paid alternatives. Full source, an honest permissions guide written so a five-year-old could follow it, and a documented trail of every gray-zone engineering decision. Download the DMG from GitHub Releases and the notch comes alive." },
+      ],
+    },
   },
 
   // Contact / Oath section
@@ -282,6 +306,7 @@ window.PORTFOLIO = {
     { label: "Send a Raven",       value: "harshtimes112@gmail.com", href: "mailto:harshtimes112@gmail.com" },
     { label: "Cross Blades",       value: "/in/harsh-jha-0311",      href: "https://www.linkedin.com/in/harsh-jha-0311/" },
     { label: "Walk the Pride Lands", value: "mufasa-ka-jungle",      href: "https://mufasa.jhaharsh.in" },
+    { label: "Take the Black",     value: "NotchIsland · macOS",     href: "https://github.com/harshjha03/NotchIsland" },
     { label: "Unfurl the Scroll",  value: "Résumé · CV",             href: "./assets/resume.pdf" },
   ],
 };

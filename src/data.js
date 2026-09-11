@@ -303,7 +303,7 @@ window.PORTFOLIO = {
   },
 
   links: [
-    { label: "Maa ka bhosda",       value: "harshtimes112@gmail.com", href: "mailto:harshtimes112@gmail.com" },
+    { label: "Send a Raven",       value: "harshtimes112@gmail.com", href: "mailto:harshtimes112@gmail.com" },
     { label: "Cross Blades",       value: "/in/harsh-jha-0311",      href: "https://www.linkedin.com/in/harsh-jha-0311/" },
     { label: "Walk the Pride Lands", value: "mufasa-ka-jungle",      href: "https://mufasa.jhaharsh.in" },
     { label: "Take the Black",     value: "NotchIsland · macOS",     href: "https://github.com/harshjha03/NotchIsland" },

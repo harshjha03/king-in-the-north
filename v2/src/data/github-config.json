@@ -1,0 +1,52 @@
+{
+  "username": "harshjha03",
+  "repos": {
+    "mufasa": {
+      "visible": true,
+      "name": "Mufasa",
+      "glyph": "AI",
+      "theme": "accent",
+      "oneLiner": "AI fitness coach built for Indian diets and budgets.",
+      "status": "Live · PWA",
+      "period": "May 2026",
+      "link": "https://mufasa.jhaharsh.in",
+      "cta": "mufasa.jhaharsh.in",
+      "flow": ["profile", "BMR → TDEE", "Gemini plan", "validate", "Supabase"],
+      "flowHighlight": 2,
+      "metrics": [
+        { "val": "<90s", "lbl": "Onboarding to plan" },
+        { "val": "55+", "lbl": "Indian foods in DB" },
+        { "val": "0", "lbl": "Gym required" }
+      ],
+      "text": "Generates personalised workout and meal plans from body type, veg/egg/non-veg/vegan preference, budget and activity. Macros are computed deterministically (Mifflin-St Jeor → TDEE) and Gemini output is validated against them before saving. Plans regenerate only on profile edits to keep API costs down.",
+      "stack": ["React 18", "TypeScript", "Supabase", "Gemini 2.0 Flash", "Groq", "Vercel"],
+      "log": "release(pwa): Mufasa AI fitness coach — live",
+      "logSub": "Gemini plans validated against deterministic macros · May 2026"
+    },
+    "NotchIsland": {
+      "visible": true,
+      "glyph": "⌘",
+      "theme": "green",
+      "oneLiner": "A free, open-source Dynamic Island for the MacBook notch.",
+      "status": "Open source · macOS",
+      "period": "Aug 2026",
+      "link": "https://github.com/harshjha03/NotchIsland",
+      "flow": ["notch", "now playing", "PiP", "AirDrop", "clipboard", "calls"],
+      "flowHighlight": 0,
+      "metrics": [
+        { "val": "1.7 MB", "lbl": "On disk" },
+        { "val": "0.6%", "lbl": "Idle CPU" },
+        { "val": "MIT", "lbl": "Licence" }
+      ],
+      "text": "Hover the notch for system-wide now-playing, picture-in-picture for calls and browser video that survives Space switches, AirDrop by drop, clipboard history, audio switching and call detection that needs no permissions. Every permission is requested lazily, only when a feature first runs.",
+      "stack": ["Swift 6", "SwiftUI", "AppKit", "ScreenCaptureKit", "SwiftPM"],
+      "log": "release(macos): NotchIsland — open source",
+      "logSub": "Native Swift 6 · 1.7 MB · 0.6% idle CPU · Aug 2026"
+    },
+    "king-in-the-north": {
+      "visible": false,
+      "name": "King in the North",
+      "oneLiner": "This portfolio — scroll-driven, data-driven, GitHub-synced."
+    }
+  }
+}

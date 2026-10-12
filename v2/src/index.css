@@ -1,0 +1,62 @@
+:root {
+  --bg: #0b0b09;
+  --surface: #121210;
+  --surface-2: #1c1b18;
+  --border: #2a2925;
+  --text: #ece8df;
+  --secondary: #b3ada0;
+  --body: #c9c3b6;
+  --muted: #8f897d;
+  --faint: #5f5a50;
+  --disabled: #4a4740;
+  --accent: #ff5a36;
+  --accent-light: #ff8a6e;
+  --green: #7ee08a;
+  --gold: #e8c26a;
+}
+
+html, body { margin: 0; background: var(--bg); }
+* { box-sizing: border-box; }
+body {
+  color: var(--text);
+  font-family: 'Geist', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--text); text-decoration-color: var(--accent); text-underline-offset: 3px; }
+a:hover { color: var(--accent); }
+::selection { background: var(--accent); color: var(--bg); }
+
+@keyframes blink { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
+@keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: .35 } }
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+@keyframes winIn { from { opacity: 0; transform: translateY(16px) } to { opacity: 1; transform: none } }
+@keyframes cue { 0%, 100% { transform: translateY(0); opacity: .4 } 50% { transform: translateY(6px); opacity: 1 } }
+
+.mono { font-family: 'Geist Mono', monospace; }
+.em { font-family: 'Newsreader', serif; font-weight: 400; color: var(--accent); letter-spacing: -0.03em; }
+.wrap { max-width: 1240px; width: 100%; margin: 0 auto; }
+.px { padding-left: clamp(20px, 4vw, 40px); padding-right: clamp(20px, 4vw, 40px); }
+.sec { position: relative; z-index: 1; }
+.label { font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--accent); }
+.h2 { font-weight: 600; font-size: clamp(36px, 5vw, 68px); line-height: 0.95; letter-spacing: -0.045em; margin: 0; }
+.h2-sm { font-weight: 600; font-size: clamp(32px, 4.4vw, 58px); line-height: 0.95; letter-spacing: -0.045em; margin: 0; }
+.panel { background: rgba(18, 18, 16, 0.92); border: 1px solid var(--border); border-radius: 12px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+.btn-unset { all: unset; cursor: pointer; box-sizing: border-box; }
+
+.resume-btn { text-decoration: none; margin-left: 6px; font-size: 13px; font-weight: 500; padding: 6px 13px; background: var(--accent); color: var(--bg); border-radius: 7px; }
+.resume-btn:hover { background: var(--text); color: var(--bg); }
+.case-card { transition: border-color .2s, background .2s; }
+.case-card:hover { border-color: var(--accent); background: #161512; }
+.link-card { transition: border-color .2s; }
+.link-card:hover { border-color: var(--accent); }
+.talk:hover { color: var(--text); }
+.muted-btn { color: var(--muted); }
+.muted-btn:hover { color: var(--accent); }
+.esc-btn:hover { color: var(--text); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

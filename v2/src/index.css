@@ -60,3 +60,23 @@ a:hover { color: var(--accent); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* Game of Thrones pop-up (GotPrompt) — palette from the original site */
+.got-card {
+  width: min(420px, 100%);
+  padding: 32px 28px 26px;
+  text-align: center;
+  color: #ece1c2;
+  background: radial-gradient(circle at 50% 0%, rgba(192,57,43,0.22), transparent 60%), #0a0604;
+  border: 1px solid #7a5c2e;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px #0a0604, 0 0 0 4px rgba(199,161,85,0.25), 0 40px 120px rgba(0,0,0,0.8);
+  animation: winIn .4s cubic-bezier(.2,.8,.2,1);
+}
+.got-kicker { margin-top: 14px; font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #c7a155; }
+.got-title { margin: 6px 0 0; font-family: 'Cinzel', serif; font-weight: 700; font-size: clamp(24px, 6vw, 30px); line-height: 1.15; letter-spacing: 0.04em; color: #f5e6c8; text-shadow: 0 0 24px rgba(232,90,60,0.35); }
+.got-text { margin: 12px 0 18px; font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 17px; line-height: 1.5; color: #b8a880; }
+.got-yes { padding: 12px 16px; font-family: 'Cinzel', serif; font-weight: 700; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #f5e6c8; background: linear-gradient(180deg, #c0392b, #7b0000); border: 1px solid #d4a017; border-radius: 4px; transition: filter .2s; }
+.got-yes:hover, .got-yes:focus-visible { filter: brightness(1.18); }
+.got-no { padding: 8px; font-family: 'EB Garamond', Georgia, serif; font-size: 15px; color: #b8a880; }
+.got-no:hover, .got-no:focus-visible { color: #f5e6c8; }

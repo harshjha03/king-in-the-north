@@ -1,6 +1,7 @@
 {
   "framework": null,
   "installCommand": "cd v2 && npm ci",
-  "buildCommand": "cd v2 && npm run build",
-  "outputDirectory": "v2/dist"
+  "buildCommand": "cd v2 && npm run build && mkdir -p dist/got && cp -R ../index.html ../src ../vendor ../assets dist/got/",
+  "outputDirectory": "v2/dist",
+  "redirects": [{ "source": "/got", "destination": "/got/", "permanent": true }]
 }

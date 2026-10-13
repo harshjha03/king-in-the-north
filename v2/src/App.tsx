@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Background } from './components/Background';
 import { CaseModal, type ModalCase } from './components/CaseModal';
+import { GotPrompt } from './components/GotPrompt';
 import { useBuilds, type Build } from './lib/github';
 import {
   LORE, PARALLAX, eyebrow, footerLine, trace, stats, featuredTitle, shipped, speedRows,
@@ -112,6 +113,7 @@ export default function App() {
       ]} />
       <Contact />
       {modal && <CaseModal cs={modal.list[modal.idx]} onClose={closeModal} onShift={shiftModal} />}
+      <GotPrompt paused={!!modal} />
     </div>
   );
 }

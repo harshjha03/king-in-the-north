@@ -8,7 +8,6 @@
       "theme": "accent",
       "oneLiner": "AI fitness coach built for Indian diets and budgets.",
       "status": "Live · PWA",
-      "period": "May 2026",
       "link": "https://mufasa.jhaharsh.in",
       "cta": "mufasa.jhaharsh.in",
       "flow": [
@@ -43,7 +42,7 @@
         "Vercel"
       ],
       "log": "Launched Mufasa, an AI fitness coach",
-      "logSub": "AI-generated plans validated against deterministic nutrition targets · May 2026"
+      "logSub": "AI-generated plans validated against deterministic nutrition targets"
     },
     "NotchIsland": {
       "visible": true,
@@ -51,7 +50,6 @@
       "theme": "green",
       "oneLiner": "A free, open-source Dynamic Island for the MacBook notch.",
       "status": "Open source · macOS",
-      "period": "Aug 2026",
       "link": "https://github.com/harshjha03/NotchIsland",
       "flow": [
         "Notch",
@@ -85,7 +83,7 @@
         "SwiftPM"
       ],
       "log": "Released NotchIsland as open source",
-      "logSub": "Native Swift 6 · 1.7 MB · 0.6% idle CPU · Aug 2026"
+      "logSub": "Native Swift 6 · 1.7 MB · 0.6% idle CPU"
     },
     "king-in-the-north": {
       "visible": false,

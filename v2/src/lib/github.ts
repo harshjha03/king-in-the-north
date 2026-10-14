@@ -14,7 +14,6 @@ export interface RepoConfig {
   glyph?: string;
   theme?: 'accent' | 'green' | 'gold';
   status?: string;
-  period?: string;
   link?: string;
   cta?: string;
   flow?: string[];
@@ -32,7 +31,6 @@ interface GitHubRepo {
   html_url: string;
   homepage: string | null;
   language: string | null;
-  created_at: string;
 }
 
 export interface Build {
@@ -43,7 +41,6 @@ export interface Build {
   glyph: string;
   theme: 'accent' | 'green' | 'gold';
   status: string;
-  period: string;
   href: string;
   cta: string;
   flow: string[];
@@ -93,7 +90,6 @@ export function toBuilds(repos: GitHubRepo[]): Build[] {
         glyph: c.glyph || name.slice(0, 2),
         theme: c.theme || 'accent',
         status: c.status || 'Open source',
-        period: c.period || (gh ? String(new Date(gh.created_at).getFullYear()) : ''),
         href,
         cta: c.cta || (href.includes('github.com') ? 'View on GitHub' : href.replace(/^https?:\/\//, '')),
         flow: c.flow || [],

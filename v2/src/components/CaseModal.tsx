@@ -3,7 +3,7 @@ import type { Metric, CaseSection } from '../lib/github';
 import { modal } from '../content';
 
 export interface ModalCase {
-  tag: string; type: string; period: string; title: string;
+  tag: string; type: string; title: string;
   metrics: Metric[]; sections: CaseSection[];
 }
 
@@ -29,7 +29,7 @@ export function CaseModal({ cs, onClose, onShift }: { cs: ModalCase; onClose: ()
       <div onClick={(e) => e.stopPropagation()}
         style={{ width: 'min(980px,100%)', maxHeight: 'calc(100vh - 32px)', overflowY: 'auto', background: '#0f0f0d', border: '1px solid #34332e', borderRadius: 14, boxShadow: '0 40px 120px rgba(0,0,0,0.7)', animation: 'winIn .28s cubic-bezier(.2,.8,.2,1)' }}>
         <div className="mono" style={{ position: 'sticky', top: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, padding: '12px 16px', borderBottom: '1px solid var(--border)', background: '#141412', fontSize: 12, color: 'var(--muted)', zIndex: 1 }}>
-          <span style={{ color: 'var(--accent)' }}>{cs.tag}</span><span>{cs.type} · {cs.period}</span>
+          <span style={{ color: 'var(--accent)' }}>{cs.tag}</span><span>{cs.type}</span>
           <button onClick={onClose} className="btn-unset esc-btn" style={{ padding: '1px 8px', border: '1px solid var(--border)', borderRadius: 4 }}>{modal.close}</button>
         </div>
         <div style={{ padding: 'clamp(22px,4vw,44px)', display: 'grid', gap: 28 }}>

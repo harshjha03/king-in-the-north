@@ -21,7 +21,7 @@ const reducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefe
 const auto = (min: number): CSSProperties => ({ display: 'grid', gridTemplateColumns: `repeat(auto-fit,minmax(min(100%,${min}px),1fr))` });
 
 const workCases: ModalCase[] = work.map((w, i) => ({
-  tag: `CASE-${pad(i + 1)}`, type: w.type, period: w.period, metrics: w.metrics,
+  tag: `CASE-${pad(i + 1)}`, type: w.type, metrics: w.metrics,
   title: w.title,
   sections: w.sections.map(([title, text]) => ({ title, text })),
 }));
@@ -86,7 +86,7 @@ export default function App() {
   const shiftModal = useCallback((d: number) => setModal((m) => m && { ...m, idx: (m.idx + d + m.list.length) % m.list.length }), []);
 
   const buildCases: ModalCase[] = builds.filter((b) => b.sections.length).map((b, i) => ({
-    tag: `BUILD-${pad(i + 1)}`, type: b.status, period: b.period, title: b.name,
+    tag: `BUILD-${pad(i + 1)}`, type: b.status, title: b.name,
     metrics: b.metrics, sections: b.sections,
   }));
   const openCase = (list: ModalCase[], idx: number) => {
@@ -234,7 +234,6 @@ function BuildCard({ b, odd, onOpen }: { b: Build; odd: boolean; onOpen: (b: Bui
           <div className="mono" style={{ position: 'absolute', left: 16, top: 14, display: 'flex', gap: 7, alignItems: 'center', fontSize: 11, color: 'var(--green)', padding: '4px 9px', border: '1px solid #2f4a33', borderRadius: 999, background: '#121c13' }}>
             <span className="dot" style={{ width: 6, height: 6 }} />{b.status}
           </div>
-          <div className="mono" style={{ position: 'absolute', right: 16, top: 16, fontSize: 11, color: 'var(--muted)' }}>{b.period}</div>
         </div>
         <div style={{ padding: 'clamp(20px,3vw,28px)', display: 'grid', gap: 18 }}>
           <div style={{ display: 'grid', gap: 6 }}>
@@ -351,13 +350,13 @@ function Cases({ sectionRef, trackRef, cP, onOpen }: { sectionRef: React.RefObje
             {work.map((w, i) => (
               <button key={w.id} onClick={() => onOpen(i)} className="btn-unset case-card" style={{ width: 'min(400px,78vw)', height: '100%', maxHeight: 520, background: 'rgba(18,18,16,0.95)', border: '1px solid var(--border)', borderRadius: 14, padding: 'clamp(20px,2.4vw,26px)', display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 18 }}>
                 <span className="mono" style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--muted)' }}>
-                  <span style={{ color: 'var(--accent)', padding: '3px 7px', border: '1px solid #4a2a20', borderRadius: 4 }}>CASE-{pad(i + 1)}</span><span>{w.period}</span>
+                  <span style={{ color: 'var(--accent)', padding: '3px 7px', border: '1px solid #4a2a20', borderRadius: 4 }}>CASE-{pad(i + 1)}</span>
                 </span>
                 <span style={{ display: 'grid', gap: 6 }}>
                   <span style={{ fontWeight: 600, fontSize: 'clamp(21px,2vw,26px)', lineHeight: 1.12, letterSpacing: '-0.025em' }}>{w.title}</span>
                   <span className="mono" style={{ fontSize: 11.5, color: 'var(--muted)' }}>{w.type}</span>
                 </span>
-                <span style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--secondary)', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical' }}>{w.sections[0][1]}</span>
+                <span style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--secondary)', overflow: 'hidden', maxHeight: '8em', display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical' }}>{w.sections[0][1]}</span>
                 <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: 12, borderTop: '1px solid var(--border)', paddingTop: 16 }}>
                   <span style={{ display: 'grid', gap: 2 }}>
                     <span style={{ fontWeight: 600, fontSize: 'clamp(28px,3vw,38px)', lineHeight: 1, letterSpacing: '-0.04em' }}>{w.mVal}</span>

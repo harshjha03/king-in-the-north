@@ -15,19 +15,12 @@ export const hero = {
   heading: { before: 'Product manager delivering ', accent: 'measurable', after: ' outcomes.' },
   bio: 'Associate Product Manager at Kazam, leading EV charging, payments and fleet billing products used by riders, fleet operators and charge-point operators across India. Previously Product Manager for B2B fuel logistics at FuelBuddy UAE. I also design and build independent products end to end.',
   backdrop: '140%',
+  // Drop your picture at v2/public/assets/photo.jpg (portrait, ~4:5). Until it exists, the frame shows initials.
+  photo: '/assets/photo.jpg',
+  photoAlt: 'Portrait of Harsh Jha',
+  photoCaption: ['Harsh Jha', 'Bengaluru, India'] as [string, string],
+  initials: 'HJ',
   scrollCue: 'Scroll',
-};
-
-// Hero summary card: rows highlight in turn every 1.6s
-export const summary = {
-  title: 'Kazam App 4.0 · release summary',
-  status: '● Shipped',
-  rows: [
-    ['Identify', 'Home screen load time: 20–25s'],
-    ['Diagnose', 'UX debt across 4 release objectives'],
-    ['Deliver', 'Kazam 4.0: 9+ features, 5 languages'],
-    ['Measure', 'Home screen: 20–25s → 3s'],
-  ] as [string, string][],
 };
 
 export const stats = [

@@ -4,7 +4,7 @@ import { CaseModal, type ModalCase } from './components/CaseModal';
 import { GotPrompt } from './components/GotPrompt';
 import { useBuilds, type Build } from './lib/github';
 import {
-  PARALLAX, nav, resumeLabel, hero, summary, stats, buildsSection, flagship, casesSection, work,
+  PARALLAX, nav, resumeLabel, hero, stats, buildsSection, flagship, casesSection, work,
   careerSection, careerLog, headLog, contact, type LogEntry,
 } from './content';
 
@@ -28,7 +28,6 @@ const workCases: ModalCase[] = work.map((w, i) => ({
 
 export default function App() {
   const builds = useBuilds();
-  const [step, setStep] = useState(0);
   const [p, setP] = useState({ kP: 0, cP: 0, tP: 0, pageP: 0, active: 'top' });
   const [modal, setModal] = useState<{ list: ModalCase[]; idx: number } | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -36,11 +35,6 @@ export default function App() {
   const cRef = useRef<HTMLElement>(null);
   const tRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const t = setInterval(() => setStep((s) => (s + 1) % summary.rows.length), 1600);
-    return () => clearInterval(t);
-  }, []);
 
   // Scroll engine: parallax via direct transforms, section progress via quantised state.
   useEffect(() => {
@@ -99,7 +93,7 @@ export default function App() {
     <div ref={rootRef} style={{ position: 'relative', overflowX: 'clip' }}>
       <Background reduced={reducedMotion} />
       <Header active={p.active} pageP={p.pageP} />
-      <Hero step={step} />
+      <Hero />
       <Stats />
       <Builds builds={builds} onOpen={openBuild} />
       <Flagship sectionRef={kRef} kp={p.kP} />
@@ -139,9 +133,9 @@ function Header({ active, pageP }: { active: string; pageP: number }) {
   );
 }
 
-function Hero({ step }: { step: number }) {
+function Hero() {
   return (
-    <section id="top" className="sec" style={{ minHeight: '100vh', display: 'grid', alignItems: 'center', padding: '120px clamp(20px,4vw,40px) 64px' }}>
+    <section id="top" className="sec" style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: 'minmax(0,1fr)', alignItems: 'center', padding: '120px clamp(20px,4vw,40px) 64px' }}>
       <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
         <div style={{ position: 'absolute', right: '-2vw', top: '14vh' }}>
           <div data-speed="0.55" data-max="400" style={{ fontWeight: 700, fontSize: 'clamp(160px,30vw,440px)', lineHeight: 0.8, letterSpacing: '-0.07em', color: 'transparent', WebkitTextStroke: '1px #2a2622' }}>{hero.backdrop}</div>
@@ -157,32 +151,36 @@ function Hero({ step }: { step: number }) {
             {hero.bio}
           </p>
         </div>
-        <div style={{ position: 'relative' }}>
-          <div data-speed="-0.18" style={{ background: 'rgba(18,18,16,0.92)', border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', boxShadow: '0 40px 100px rgba(0,0,0,0.55)' }}>
-            <div className="mono" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', borderBottom: '1px solid var(--border)', fontSize: 11, color: 'var(--muted)' }}>
-              <span style={{ display: 'flex', gap: 6 }}>{[0, 1, 2].map((i) => <span key={i} style={{ width: 9, height: 9, borderRadius: '50%', background: '#2e2d29' }} />)}</span>
-              <span>{summary.title}</span><span style={{ color: 'var(--green)' }}>{summary.status}</span>
-            </div>
-            <div className="mono" style={{ padding: '14px 14px 4px', display: 'grid', gap: 2, fontSize: 12.5 }}>
-              {summary.rows.map(([k, v], i) => {
-                const a = i === step, d = i < step;
-                return (
-                  <div key={k} style={{ display: 'grid', gridTemplateColumns: '16px 72px minmax(0,1fr)', gap: 10, padding: '8px 10px', borderRadius: 6, background: a ? 'var(--surface-2)' : 'transparent', transition: 'background .35s' }}>
-                    <span style={{ color: a ? 'var(--accent)' : d ? 'var(--green)' : 'var(--disabled)' }}>{a ? '›' : d ? '✓' : '·'}</span>
-                    <span style={{ color: a ? 'var(--accent)' : d ? 'var(--muted)' : 'var(--faint)' }}>{k}</span>
-                    <span style={{ color: a ? 'var(--text)' : d ? 'var(--secondary)' : 'var(--faint)', overflowWrap: 'anywhere' }}>{v}</span>
-                  </div>
-                );
-              })}
-              <div style={{ padding: '8px 10px 12px', color: 'var(--faint)', display: 'flex', gap: 8 }}><span>$</span><span style={{ width: 7, height: 14, background: 'var(--accent)', animation: 'blink 1s steps(1) infinite' }} /></div>
-            </div>
-          </div>
+        <div className="photo-slot">
+          <div data-speed="-0.18"><PhotoFrame /></div>
         </div>
       </div>
       <div className="mono" style={{ position: 'absolute', left: '50%', bottom: 22, transform: 'translateX(-50%)', fontSize: 11, color: 'var(--faint)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
         <span>{hero.scrollCue}</span><span style={{ animation: 'cue 2s ease-in-out infinite', color: 'var(--accent)' }}>↓</span>
       </div>
     </section>
+  );
+}
+
+// Portrait with a sweeping accent border and viewfinder corners; falls back to initials until the photo exists.
+function PhotoFrame() {
+  const [failed, setFailed] = useState(false);
+  return (
+    <figure style={{ margin: 0, display: 'grid', gap: 12 }}>
+      <div className="photo-ring">
+        <div className="photo-inner">
+          {failed
+            ? <div className="photo-fallback">{hero.initials}</div>
+            : <img src={hero.photo} alt={hero.photoAlt} onError={() => setFailed(true)} />}
+          {['tl', 'tr', 'bl', 'br'].map((c) => <span key={c} className={`photo-corner ${c}`} aria-hidden="true" />)}
+          <span className="photo-scan" aria-hidden="true" />
+        </div>
+      </div>
+      <figcaption className="mono" style={{ display: 'flex', justifyContent: 'space-between', gap: 12, fontSize: 11.5, color: 'var(--muted)', padding: '0 4px' }}>
+        <span>{hero.photoCaption[0]}</span>
+        <span style={{ display: 'flex', gap: 8, alignItems: 'center' }}><span className="dot" />{hero.photoCaption[1]}</span>
+      </figcaption>
+    </figure>
   );
 }
 

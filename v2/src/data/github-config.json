@@ -11,17 +11,39 @@
       "period": "May 2026",
       "link": "https://mufasa.jhaharsh.in",
       "cta": "mufasa.jhaharsh.in",
-      "flow": ["profile", "BMR → TDEE", "Gemini plan", "validate", "Supabase"],
+      "flow": [
+        "Profile",
+        "BMR → TDEE",
+        "Gemini plan",
+        "Validation",
+        "Supabase"
+      ],
       "flowHighlight": 2,
       "metrics": [
-        { "val": "<90s", "lbl": "Onboarding to plan" },
-        { "val": "55+", "lbl": "Indian foods in DB" },
-        { "val": "0", "lbl": "Gym required" }
+        {
+          "val": "<90s",
+          "lbl": "Onboarding to plan"
+        },
+        {
+          "val": "55+",
+          "lbl": "Indian foods in database"
+        },
+        {
+          "val": "4",
+          "lbl": "Diet types supported"
+        }
       ],
-      "text": "Generates personalised workout and meal plans from body type, veg/egg/non-veg/vegan preference, budget and activity. Macros are computed deterministically (Mifflin-St Jeor → TDEE) and Gemini output is validated against them before saving. Plans regenerate only on profile edits to keep API costs down.",
-      "stack": ["React 18", "TypeScript", "Supabase", "Gemini 2.0 Flash", "Groq", "Vercel"],
-      "log": "release(pwa): Mufasa AI fitness coach — live",
-      "logSub": "Gemini plans validated against deterministic macros · May 2026"
+      "text": "Generates personalised workout and meal plans based on body type, dietary preference (vegetarian, eggetarian, non-vegetarian or vegan), budget and activity level. Macronutrient targets are calculated deterministically (Mifflin-St Jeor → TDEE), and Gemini output is validated against them before it is saved. Plans are regenerated only when the profile changes, which keeps API costs low.",
+      "stack": [
+        "React 18",
+        "TypeScript",
+        "Supabase",
+        "Gemini 2.0 Flash",
+        "Groq",
+        "Vercel"
+      ],
+      "log": "Launched Mufasa, an AI fitness coach",
+      "logSub": "AI-generated plans validated against deterministic nutrition targets · May 2026"
     },
     "NotchIsland": {
       "visible": true,
@@ -31,22 +53,44 @@
       "status": "Open source · macOS",
       "period": "Aug 2026",
       "link": "https://github.com/harshjha03/NotchIsland",
-      "flow": ["notch", "now playing", "PiP", "AirDrop", "clipboard", "calls"],
+      "flow": [
+        "Notch",
+        "Now playing",
+        "Picture-in-picture",
+        "AirDrop",
+        "Clipboard",
+        "Calls"
+      ],
       "flowHighlight": 0,
       "metrics": [
-        { "val": "1.7 MB", "lbl": "On disk" },
-        { "val": "0.6%", "lbl": "Idle CPU" },
-        { "val": "MIT", "lbl": "Licence" }
+        {
+          "val": "1.7 MB",
+          "lbl": "On disk"
+        },
+        {
+          "val": "0.6%",
+          "lbl": "Idle CPU"
+        },
+        {
+          "val": "MIT",
+          "lbl": "Licence"
+        }
       ],
-      "text": "Hover the notch for system-wide now-playing, picture-in-picture for calls and browser video that survives Space switches, AirDrop by drop, clipboard history, audio switching and call detection that needs no permissions. Every permission is requested lazily, only when a feature first runs.",
-      "stack": ["Swift 6", "SwiftUI", "AppKit", "ScreenCaptureKit", "SwiftPM"],
-      "log": "release(macos): NotchIsland — open source",
+      "text": "Hovering over the notch reveals system-wide now-playing controls, picture-in-picture for calls and browser video that persists across Spaces, drag-and-drop AirDrop, clipboard history, audio device switching, and call detection that requires no permissions. Each permission is requested only when the relevant feature is first used.",
+      "stack": [
+        "Swift 6",
+        "SwiftUI",
+        "AppKit",
+        "ScreenCaptureKit",
+        "SwiftPM"
+      ],
+      "log": "Released NotchIsland as open source",
       "logSub": "Native Swift 6 · 1.7 MB · 0.6% idle CPU · Aug 2026"
     },
     "king-in-the-north": {
       "visible": false,
       "name": "King in the North",
-      "oneLiner": "This portfolio — scroll-driven, data-driven, GitHub-synced."
+      "oneLiner": "This portfolio: a scroll-driven site generated from structured content and GitHub data."
     }
   }
 }

@@ -126,23 +126,34 @@ export const work: WorkCase[] = [
       ['Approach','Designed a dashboard of avoided emissions per session and per charger, filterable by hub and time period. Savings are calculated per vehicle type (3W, 4W) from kWh consumed against ICE-equivalent mileage, for example the Mahindra Treo Zor at 10.85 km/kWh. Results appear in session reports and exports.']]},
 ];
 
-export interface LogEntry { k: string; ref: string; msg: string; sub: string; role?: boolean; side?: boolean }
+export interface Role {
+  company: string; role: string; period: string; location: string; current?: boolean;
+  summary: string; highlights: string[];
+}
 
-const byId = Object.fromEntries(work.map((w) => [w.id, w]));
-const workLog = (ids: string[]): LogEntry[] =>
-  ids.map((id) => ({ k: id, ref: 'Kazam', msg: byId[id].title, sub: byId[id].type }));
-
-export const careerSection = { label: '04 — Experience', heading: 'Experience', intro: '2024 — Present', buildRef: 'Independent' };
-
-// Timeline before independent products; visible products from github-config.json are appended, then `headLog`.
-export const careerLog: LogEntry[] = [
-  { k:'fuelbuddy', role:true, ref:'Role', msg:'FuelBuddy UAE — Product Manager, B2B', sub:'On-demand B2B fuel delivery: driver workflows, dispatch, client features and payments · 2024 – 2025' },
-  { k:'kazamjoin', role:true, ref:'Role', msg:'Kazam — Associate Product Manager', sub:'Reporting to the Founder; responsible for onboarding, transaction systems and growth metrics · Bengaluru · 2025 – Present' },
-  ...workLog(['anomaly', 'reports', 'carbon']),
-  { k:'kazam4', ref:'Release', msg:'Kazam App 4.0 — up to 10× faster', sub:'Home screen load time reduced from 20–25s to 3s · 9+ features · 5 languages' },
-  ...workLog(['wallet', 'withdrawal', 'notifications', 'noqr']),
-];
-export const headLog: LogEntry = { k:'head', ref:'Now', msg:'Open to new product roles', sub:'Available for conversations about product management opportunities.' };
+export const experience = {
+  label: '04 — Experience',
+  heading: 'Experience',
+  intro: '2024 — Present',
+  currentLabel: 'Current',
+  roles: [
+    { company: 'FuelBuddy UAE', role: 'Product Manager, B2B', period: '2024 – 2025', location: 'Gurugram',
+      summary: 'B2B on-demand fuel delivery platform connecting enterprise clients with fuel logistics across the UAE.',
+      highlights: [
+        'Owned driver workflows, client-facing features, dispatch coordination and payment integration',
+        'Mapped user journeys across drivers, dispatchers and enterprise clients',
+        'Specified operational edge cases and prioritised delivery under limited engineering capacity',
+      ] },
+    { company: 'Kazam', role: 'Associate Product Manager', period: '2025 – Present', location: 'Bengaluru', current: true,
+      summary: 'EV charging platform serving riders, fleet operators and charge-point operators across India. Reporting to the Founder.',
+      highlights: [
+        'Led the Kazam App 4.0 release, reducing home screen load time from 20–25s to 3s',
+        'Grew monthly active users by 140% and transactions by 65%',
+        'Reduced onboarding drop-off by 35%',
+        'Shipped payments, fleet billing, analytics and CMS products',
+      ] },
+  ] as Role[],
+};
 
 export const contact = {
   label: '05 — Contact',

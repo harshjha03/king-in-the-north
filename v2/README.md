@@ -18,5 +18,5 @@ Push the repo, then add an entry keyed by the repo name:
 `visible` is the show/hide flag. Everything else is optional copy; anything missing falls back to GitHub
 (description, homepage/repo URL, language). Available fields: `name`, `oneLiner`, `text`,
 `glyph`, `theme` (`accent` | `green` | `gold`), `status`, `link`, `cta`, `flow` + `flowHighlight`,
-`metrics`, `stack`, `log` + `logSub` (career timeline line), and `sections` (adds a "Read case study →" pop-up).
-Entries appear in config order. Each visible build is also added to the career timeline.
+`metrics`, `stack` and `sections` (adds a "Read case study →" pop-up).
+Entries appear in config order.

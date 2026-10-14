@@ -20,8 +20,6 @@ export interface RepoConfig {
   flowHighlight?: number;
   metrics?: Metric[];
   stack?: string[];
-  log?: string;
-  logSub?: string;
   sections?: CaseSection[];
 }
 
@@ -47,8 +45,6 @@ export interface Build {
   flowHighlight: number;
   metrics: Metric[];
   stack: string[];
-  log: string;
-  logSub: string;
   sections: CaseSection[];
 }
 
@@ -96,8 +92,6 @@ export function toBuilds(repos: GitHubRepo[]): Build[] {
         flowHighlight: c.flowHighlight ?? 0,
         metrics: c.metrics || [],
         stack: c.stack || (gh?.language ? [gh.language] : []),
-        log: c.log || `Launched ${name}`,
-        logSub: c.logSub || c.oneLiner || desc,
         sections: c.sections || [],
       };
     });

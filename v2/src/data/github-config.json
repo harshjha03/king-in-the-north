@@ -40,9 +40,7 @@
         "Gemini 2.0 Flash",
         "Groq",
         "Vercel"
-      ],
-      "log": "Launched Mufasa, an AI fitness coach",
-      "logSub": "AI-generated plans validated against deterministic nutrition targets"
+      ]
     },
     "NotchIsland": {
       "visible": true,
@@ -81,9 +79,7 @@
         "AppKit",
         "ScreenCaptureKit",
         "SwiftPM"
-      ],
-      "log": "Released NotchIsland as open source",
-      "logSub": "Native Swift 6 · 1.7 MB · 0.6% idle CPU"
+      ]
     },
     "king-in-the-north": {
       "visible": false,

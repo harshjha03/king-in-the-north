@@ -5,7 +5,7 @@ import { GotPrompt } from './components/GotPrompt';
 import { useBuilds, type Build } from './lib/github';
 import {
   PARALLAX, nav, resumeLabel, hero, stats, buildsSection, flagship, casesSection, work,
-  careerSection, careerLog, headLog, contact, type LogEntry,
+  experience, contact,
 } from './content';
 
 const THEMES = {
@@ -98,11 +98,7 @@ export default function App() {
       <Builds builds={builds} onOpen={openBuild} />
       <Flagship sectionRef={kRef} kp={p.kP} />
       <Cases sectionRef={cRef} trackRef={trackRef} cP={p.cP} onOpen={(idx) => openCase(workCases, idx)} />
-      <Career sectionRef={tRef} tP={p.tP} log={[
-        ...careerLog,
-        ...builds.map((b): LogEntry => ({ k: b.key, side: true, ref: careerSection.buildRef, msg: b.log, sub: b.logSub })),
-        headLog,
-      ]} />
+      <Experience sectionRef={tRef} tP={p.tP} />
       <Contact />
       {modal && <CaseModal cs={modal.list[modal.idx]} onClose={closeModal} onShift={shiftModal} />}
       <GotPrompt paused={!!modal} />
@@ -376,36 +372,46 @@ function Cases({ sectionRef, trackRef, cP, onOpen }: { sectionRef: React.RefObje
   );
 }
 
-function Career({ sectionRef, tP, log }: { sectionRef: React.RefObject<HTMLElement>; tP: number; log: LogEntry[] }) {
+function Experience({ sectionRef, tP }: { sectionRef: React.RefObject<HTMLElement>; tP: number }) {
+  const roles = experience.roles;
   return (
     <section id="career" ref={sectionRef} className="sec" style={{ padding: 'clamp(80px,10vw,140px) clamp(20px,4vw,40px)' }}>
-      <div className="wrap" style={{ ...auto(300), gap: 'clamp(28px,5vw,64px)' }}>
-        <div style={{ display: 'grid', gap: 14, alignContent: 'start', position: 'sticky', top: 110 }}>
-          <div className="label">{careerSection.label}</div>
-          <h2 className="h2">{careerSection.heading}</h2>
-          <div className="mono" style={{ fontSize: 12.5, color: 'var(--muted)' }}>{careerSection.intro}</div>
-        </div>
-        <div style={{ position: 'relative', gridColumn: 'span 2', minWidth: 'min(100%,320px)', paddingLeft: 34 }}>
-          <div style={{ position: 'absolute', left: 9, top: 8, bottom: 8, width: 2, background: '#22211d' }} />
-          <div style={{ position: 'absolute', left: 9, top: 8, width: 2, background: 'linear-gradient(#ff5a36,#ff8a6e)', height: `${(tP * 100).toFixed(1)}%`, boxShadow: '0 0 10px #ff5a36' }} />
-          <div style={{ display: 'grid', gap: 6 }}>
-            {log.map((e, i) => {
-              const on = tP >= (i + 0.5) / log.length;
-              const col = e.side ? 'var(--green)' : e.role ? 'var(--gold)' : 'var(--accent)';
-              return (
-                <div key={e.k} style={{ position: 'relative', padding: '12px 0 18px', opacity: on ? 1 : 0.35, transition: 'opacity .4s' }}>
-                  <span style={{ position: 'absolute', left: -30, top: 18, width: 12, height: 12, borderRadius: '50%', background: on && !e.role ? col : 'var(--bg)', border: `2px solid ${on ? col : '#3a3833'}`, boxShadow: '0 0 0 4px #0b0b09', transition: 'all .3s' }} />
-                  <div style={{ display: 'grid', gap: 4 }}>
-                    <div className="mono" style={{ display: 'flex', gap: 10, alignItems: 'baseline', flexWrap: 'wrap', fontSize: 11.5 }}>
-                      <span style={{ color: e.side ? 'var(--green)' : e.role ? 'var(--gold)' : 'var(--accent-light)', padding: '0 6px', border: `1px solid ${e.side ? '#2f4a33' : e.role ? '#4a3f22' : '#4a2a20'}`, borderRadius: 3, fontSize: 10.5 }}>{e.ref}</span>
-                    </div>
-                    <div style={{ fontWeight: e.role ? 600 : 500, fontSize: e.role ? 'clamp(22px,2.4vw,28px)' : 17, lineHeight: 1.25, letterSpacing: '-0.02em' }}>{e.msg}</div>
-                    <div style={{ fontSize: 14, color: 'var(--muted)', maxWidth: '62ch' }}>{e.sub}</div>
-                  </div>
-                </div>
-              );
-            })}
+      <div className="wrap" style={{ display: 'grid', gap: 'clamp(32px,4vw,48px)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: 16, flexWrap: 'wrap' }}>
+          <div style={{ display: 'grid', gap: 12 }}>
+            <div className="label">{experience.label}</div>
+            <h2 className="h2">{experience.heading}</h2>
           </div>
+          <div className="mono" style={{ fontSize: 12.5, color: 'var(--muted)' }}>{experience.intro}</div>
+        </div>
+        <div className="xp" style={{ '--p': tP } as CSSProperties}>
+          <span className="xp-line" aria-hidden="true" />
+          <span className="xp-fill" aria-hidden="true" />
+          {roles.map((r, i) => {
+            const on = tP >= i / roles.length + 0.04; // lights when the progress line reaches this card's dot
+            const col = r.current ? 'var(--accent)' : 'var(--gold)';
+            return (
+              <article key={r.company} className="panel xp-card" style={{ opacity: on ? 1 : 0.4 }}>
+                <span className="xp-dot" style={{ background: on ? col : 'var(--bg)', borderColor: on ? col : '#3a3833' }} aria-hidden="true" />
+                <div className="mono" style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', fontSize: 12, color: 'var(--muted)' }}>
+                  <span>{r.period} · {r.location}</span>
+                  {r.current && <span style={{ display: 'flex', gap: 7, alignItems: 'center', color: 'var(--green)' }}><span className="dot" style={{ width: 6, height: 6 }} />{experience.currentLabel}</span>}
+                </div>
+                <div style={{ display: 'grid', gap: 4 }}>
+                  <h3 style={{ fontWeight: 600, fontSize: 'clamp(28px,3.2vw,40px)', lineHeight: 1, letterSpacing: '-0.035em', margin: 0 }}>{r.company}</h3>
+                  <div style={{ fontFamily: "'Newsreader',serif", fontStyle: 'italic', fontSize: 19, color: col }}>{r.role}</div>
+                </div>
+                <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, color: 'var(--body)' }}>{r.summary}</p>
+                <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'grid', gap: 8, borderTop: '1px solid var(--border)', paddingTop: 18 }}>
+                  {r.highlights.map((h, j) => (
+                    <li key={h} style={{ display: 'grid', gridTemplateColumns: '28px minmax(0,1fr)', gap: 6, fontSize: 14.5, lineHeight: 1.55 }}>
+                      <span className="mono" style={{ fontSize: 11, color: col, paddingTop: 3 }}>{pad(j + 1)}</span><span>{h}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

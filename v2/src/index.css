@@ -88,6 +88,21 @@ a:hover { color: var(--accent); }
   animation: scan 5s ease-in-out infinite;
 }
 
+/* Experience: horizontal timeline, vertical when stacked */
+.xp { --p: 0; position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; padding-top: 40px; }
+.xp-line, .xp-fill { position: absolute; top: 7px; left: 0; height: 2px; border-radius: 2px; }
+.xp-line { right: 0; background: #22211d; }
+.xp-fill { width: calc(var(--p) * 100%); background: linear-gradient(90deg, #ff5a36, #ff8a6e); box-shadow: 0 0 10px #ff5a36; }
+.xp-card { position: relative; padding: clamp(22px, 3vw, 30px); display: grid; gap: 18px; align-content: start; transition: opacity .4s; }
+.xp-dot { position: absolute; top: -40px; left: clamp(22px, 3vw, 30px); width: 16px; height: 16px; border-radius: 50%; border: 2px solid; box-shadow: 0 0 0 4px var(--bg); transition: all .3s; }
+@media (max-width: 900px) {
+  .xp { grid-template-columns: minmax(0, 1fr); padding-top: 0; padding-left: 34px; }
+  .xp-line, .xp-fill { top: 0; left: 9px; width: 2px; }
+  .xp-line { bottom: 0; height: auto; }
+  .xp-fill { height: calc(var(--p) * 100%); }
+  .xp-dot { top: 24px; left: -32px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
